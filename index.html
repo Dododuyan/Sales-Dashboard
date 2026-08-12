@@ -125,7 +125,7 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Sales Dashboard</h1>
 <div class="sub">담당 <span id="facN">311</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-10 09:04 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-07 · 프로모션 2026-08-10</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
+<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-12 09:02 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-07 · 프로모션 2026-08-10</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -196,7 +196,7 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 </div>
 <div id="viewMyhotel" style="display:none">
 <div class="wkkpi" id="myKpi"></div>
-<div class="card"><h3><svg class="ic"><use href="#i-hotel"/></svg> My Hotel — 담당 시설 관리대장<button class="miniBtn" onclick="exportMyHotel()" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> 관리대장 CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 행 클릭 시 히스토리 카드 · 필터 연동 · 기준파일 김도도(NEW)</span></h3>
+<div class="card"><h3><svg class="ic"><use href="#i-hotel"/></svg> My Hotel — 담당 시설 관리대장<button class="miniBtn" id="btnSeoul" onclick="toggleSeoul()" style="margin-left:8px;vertical-align:middle" title="호텔 소재지는 지방인데 서울에 영업·예약 사무소가 있는 시설만 봅니다"><svg class="ic"><use href="#i-building"/></svg> 서울오피스</button><button class="miniBtn" onclick="exportMyHotel()" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> 관리대장 CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 행 클릭 시 히스토리 카드 · 필터 연동 · 기준파일 김도도(NEW)</span></h3>
 <div class="tbl-wrap" style="max-height:640px"><table id="myTbl" class="sortable"><thead></thead><tbody></tbody></table></div></div>
 </div>
 <div id="viewPromo" style="display:none">
@@ -232,7 +232,7 @@ const MKTNOTE='제주 호텔 검색 지속 강세 · 중국·대만 검색 증�
 const RGS=['제주시','서귀포시','서울','기타지역'];
 const YEARS=[2023,2024,2025,2026,2027];
 const SORD={'Active':0,'Pending':1,'Suspended':2,'ing':3};const STATUSES=[...new Set(DATA.map(d=>d.status||'(미지정)'))].sort((a,b)=>(SORD[a]!==undefined?SORD[a]:9)-(SORD[b]!==undefined?SORD[b]:9));
-const state={m:'r',b:'cout',year:2026,month:'all',region:'',city:'',pic:'',chain:'',search:'',status:new Set(['Active']),cats:new Set(CATLABEL),view:'weekly',cum:false,cmpYear:2025,perfM:'sell',period:'w'};
+const state={m:'r',b:'cout',year:2026,month:'all',region:'',city:'',pic:'',chain:'',search:'',status:new Set(['Active']),cats:new Set(CATLABEL),view:'weekly',cum:false,cmpYear:2025,perfM:'sell',period:'w',seoulOnly:false};
 const won=v=>Math.round(v).toLocaleString();
 function fmtDisc(v){if(v==null||v==='')return '';let str=String(v).trim();const pct=str.includes('%');const n=parseFloat(str.replace(/[,%\s]/g,''));if(isNaN(n))return str;const num=(Number.isInteger(n)?n:Math.round(n*100)/100).toLocaleString();return pct?num+'%':num+'원';}
 const eok=v=>(v/1e8).toFixed(1);
@@ -286,6 +286,7 @@ function resetFilters(){
 }
 let esortDirty=false;
 let myExportRows=[];
+function toggleSeoul(){state.seoulOnly=!state.seoulOnly;render();}
 function dlCSV(text,name){const blob=new Blob(['﻿'+text],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const d=new Date();const ymd=(''+d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');const a=document.createElement('a');a.href=url;a.download=name+'_'+ymd+'.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
 function csvEsc(t){return '"'+String(t==null?'':t).replace(/[⇅▲▼<svg class="ic"><use href="#i-refresh"/></svg>↕]/g,'').replace(/[\r\n]+/g,' ').replace(/"/g,'""').trim()+'"';}
 function exportCSV(table,name){if(!table||!table.querySelectorAll)return;const rows=[...table.querySelectorAll('tr')];if(!rows.length)return;const csv=rows.map(r=>[...(r.children||[])].map(c=>csvEsc((c.textContent||'').replace(/\s+/g,' '))).join(',')).join('\r\n');dlCSV(csv,name);}
@@ -508,6 +509,7 @@ function renderModal(){
  const insBox=`<div class="hins"><h4><svg class="ic"><use href="#i-target"/></svg> 이 호텔 액션 제안</h4><ul>${hotelInsights(o).map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
  const paceBox=o.lead!=null?`<div class="pace" style="margin:0 0 12px 0"><b>부킹 페이스</b> — ${o.lead>60?'장기 선예약(롱리드) 성향 · 얼리버드·조기 요금 세팅 유리':o.lead>21?'중기 리드타임 · 표준 프로모션 구간':'임박 예약(숏리드) 성향 · 라스트미닛 프로모션·당일 가용재고 관리 중요'}</div>`:'';
  const promoBox=(o.promos&&o.promos.length)?`<div class="hins" style="border-color:#e2d6cd"><h4><svg class="ic"><use href="#i-ticket"/></svg> 현재 적용 프로모션 · <span style="color:var(--od)">${(o.ptypes||[]).filter(t=>t!=='기타').join('·')||'-'}</span></h4><div style="display:flex;flex-wrap:wrap;gap:6px">${o.promos.map(x=>`<span style="background:var(--oll);border:1px solid var(--ol);border-radius:12px;padding:3px 10px;font-size:11px">${x[0]} <b style="color:var(--od)">${fmtDisc(x[1])}</b>${x[2]?' <span style="color:#bbb">~'+x[2]+'</span>':''}</span>`).join('')}</div><div style="font-size:11px;color:var(--gray);margin-top:8px">적용 룸타입 <b>${o.pnrt||'-'}종</b> · 투숙 ${o.pcstart||'?'}~${o.pcend||'?'} · 판매 <b>${o.popen?'오픈':'미오픈'}</b></div></div>`:'<div class="hins" style="border-color:#e2d6cd"><h4><svg class="ic"><use href="#i-ticket"/></svg> 현재 적용 프로모션</h4><div style="color:#bbb;font-size:12px">적용된 프로모션 없음 (프로모션 파일 기준)</div></div>';
+ const dimBox=mDimBox(o,MO,basisL,mScope);
  const kpiNote=`<div style="font-size:10.5px;color:var(--gray);margin:-6px 0 12px 2px">▲▼ 증감은 <b>전년 동기간</b>(현재연도에 실적 있는 같은 월 범위) 대비 · 기준 ${basisL}·${scopeL}</div>`;
   const _pk=PK[o.code];let pkLine='';
  if(_pk){const _mi=mState.m==='r'?0:1,_u=mState.m==='r'?'박':'원',_f=v=>mState.m==='r'?Math.round(v).toLocaleString():bm(v);
@@ -515,7 +517,7 @@ function renderModal(){
   const wv=nw-w1,sp=st?((nw-st)/st*100):null;
   const _cN=(_pk['2026-07']&&_pk['2026-07'].now)?_pk['2026-07'].now[_mi]:0;
   pkLine=nw||w1||st?`<div class="pace" style="margin:0 0 12px 0"><b><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스(픽업)</b> · 이번 달(7월) 온북 <b>${_f(_cN)}${_u}</b> · 향후(~12월) <b>${_f(nw)}${_u}</b> · 이번 주 <b class="${wv>=0?'pos':'neg'}">${wv>=0?'+':''}${_f(wv)}</b> · 전년 동기 리드 대비 ${sp==null?'–':'<b class="'+(sp>=0?'pos':'neg')+'">'+(sp>=0?'+':'')+sp.toFixed(0)+'%</b>'} <span style="color:var(--gray);font-size:10px">(스냅 07-24)</span></div>`:'';}
- const body=`${ctrl}${kpi}${kpiNote}${insBox}${promoBox}${paceBox}${pkLine}
+ const body=`${ctrl}${kpi}${kpiNote}${dimBox}${insBox}${promoBox}${paceBox}${pkLine}
   <div class="mgrid">
    <div class="mbox"><h4>연도별 추이 (${({r:'RN',s:'매출',m:'마진'})[mState.m]}, ${basisL}${mState.month==='all'?'':' · '+mState.month+'월'})</h4><canvas id="mcTrend" height="120"></canvas></div>
    <div class="mbox"><h4>월별 패턴 ${mState.year} vs ${mState.year-1}</h4><canvas id="mcMon" height="120"></canvas></div>
@@ -783,6 +785,38 @@ function dimSet(SRC,code,MO){const d=SRC[code];const out={};if(!d)return out;
  for(const k in d){const m=(d[k]||{})[state.b]||{};let rn=0;for(const ym in m){if(+ym.slice(0,4)===state.year&&MO.has(+ym.slice(4)))rn+=m[ym][1];}if(rn>0)out[k]=rn;}return out;}
 function dimMix(SRC,code,MO){const s=dimSet(SRC,code,MO);const t=Object.values(s).reduce((a,b)=>a+b,0);if(!t)return '';
  return Object.entries(s).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+' '+Math.round(v/t*100)+'%').join(' / ');}
+// ── 호텔 카드: 계약형태(·CMS) 구성 — 한 시설이 복수 계약타입으로 운영되는 경우 각각의 실적·비중 표기
+function dimAgg(SRC,code,MO){const d=SRC[code];const out=[];if(!d)return out;
+ for(const k in d){const m=(d[k]||{})[mState.b]||{};const a={k:k,bk:0,rn:0,sell:0,mg:0};
+  for(const ym in m){if(+ym.slice(0,4)===mState.year&&MO.has(+ym.slice(4))){const v=m[ym];a.bk+=v[0];a.rn+=v[1];a.sell+=v[2];a.mg+=v[3];}}
+  if(a.rn>0||a.bk>0)out.push(a);}
+ return out.sort((x,y)=>y.rn-x.rn);}
+function mDimBox(o,MO,basisL,mScope){
+ const ct=dimAgg(CT,o.code,MO),cm=dimAgg(CM,o.code,MO);
+ if(!ct.length)return '';
+ const T=ct.reduce((a,x)=>({bk:a.bk+x.bk,rn:a.rn+x.rn,sell:a.sell+x.sell,mg:a.mg+x.mg}),{bk:0,rn:0,sell:0,mg:0});
+ const cl=k=>CTCOL[k]||'#b9b0a8';
+ const scope=`<span style="font-weight:400;color:var(--gray);font-size:10px">(${mState.year}·${basisL}·${mScope}·예약 단위 로데이터)</span>`;
+ if(ct.length===1){
+  return `<div class="hins" style="border-color:#e2d6cd"><h4><svg class="ic"><use href="#i-pie"/></svg> 계약형태 구성 ${scope}</h4>
+  <div style="font-size:12.5px"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${cl(ct[0].k)};margin-right:6px"></span><b>${ct[0].k}</b> 단일 운영 · 전체 실적 <b>100%</b> <span style="color:var(--gray)">(${won(ct[0].rn)}박)</span>${cm.length>1?' · CMS '+cm.map(x=>x.k+' '+Math.round(x.rn/T.rn*100)+'%').join(' / '):''}</div></div>`;}
+ const bar=`<div style="display:flex;height:12px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:#f2ede9">${ct.map(x=>`<i title="${x.k} ${(x.rn/T.rn*100).toFixed(1)}%" style="width:${(x.rn/T.rn*100).toFixed(2)}%;background:${cl(x.k)};display:block"></i>`).join('')}</div>`;
+ const row=(x,isT)=>{const sh=T.rn?x.rn/T.rn*100:0;const adr=x.rn?x.sell/x.rn:0;
+  return `<tr style="${isT?'border-top:2px solid var(--dk);font-weight:700':''}">
+  <td style="text-align:left;padding:4px 6px">${isT?'합계':'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+cl(x.k)+';margin-right:6px"></span>'+x.k}</td>
+  <td style="text-align:right;padding:4px 6px">${won(x.bk)}</td>
+  <td style="text-align:right;padding:4px 6px">${won(x.rn)}</td>
+  <td style="text-align:right;padding:4px 6px;color:${isT?'inherit':'var(--od)'};font-weight:700">${isT?'100.0%':sh.toFixed(1)+'%'}</td>
+  <td class="confid" style="text-align:right;padding:4px 6px">${won(x.sell)}</td>
+  <td class="confid" style="text-align:right;padding:4px 6px">${won(adr)}</td></tr>`;};
+ const cmLine=cm.length>1?`<div style="font-size:11px;color:var(--gray);margin-top:8px;padding-top:8px;border-top:1px dashed #f3e6da">CMS 구성 · ${cm.map(x=>`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${cl(x.k)};margin-right:4px"></span><b style="color:var(--dk)">${x.k}</b> ${(x.rn/T.rn*100).toFixed(1)}% <span>(${won(x.rn)}박)</span>`).join(' · ')}</div>`:'';
+ return `<div class="hins" style="border-color:#e2d6cd"><h4><svg class="ic"><use href="#i-pie"/></svg> 계약형태별 실적 구성 · <span style="color:var(--od)">${ct.length}개 타입 동시 운영</span> ${scope}</h4>
+ ${bar}
+ <table style="width:100%;border-collapse:collapse;font-size:11.5px">
+ <thead><tr style="color:var(--gray);font-size:10.5px;border-bottom:1px solid #eee">
+ <th style="text-align:left;padding:3px 6px">계약형태</th><th style="text-align:right;padding:3px 6px">예약</th><th style="text-align:right;padding:3px 6px">RN</th><th style="text-align:right;padding:3px 6px">RN 비중</th><th class="confid" style="text-align:right;padding:3px 6px">판매가(원)</th><th class="confid" style="text-align:right;padding:3px 6px">ADR</th></tr></thead>
+ <tbody>${ct.map(x=>row(x,0)).join('')}${row(T,1)}</tbody></table>${cmLine}
+ <div style="font-size:10.5px;color:var(--gray);margin-top:7px">마스터 등록 계약형태: <b>${o.ctype||'-'}</b> · 위 수치는 <b>예약 건별 실제 계약타입</b> 기준</div></div>`;}
 function renderCtype(base,MO){
  const SRC=state.ctdim==='cm'?CM:CT;
  const g={},bl={cout:'체크아웃',cin:'체크인',book:'부킹'}[state.b];
@@ -939,18 +973,25 @@ function renderPickup(base){
   mkt.push(`<span style="color:var(--gray)">${MKTNOTE} · 출처 ${MKT.src}</span>`);
   _pr.innerHTML='<ul class="insul">'+(insBlocks([['<svg class="ic"><use href="#i-trend-up"/></svg> 흐름 (지역별 픽업)',flow],['<svg class="ic"><use href="#i-target"/></svg> 집중 (선제 영업)',focus],['<svg class="ic"><use href="#i-scan"/></svg> 놓친 것 (수요 강한데 미조정)',miss],['<svg class="ic"><use href="#i-globe"/></svg> 시장 동향 대조 (Lighthouse)',mkt]])||'<li style="color:#bbb">데이터 없음</li>')+'</ul>';}
 }
+// 서울오피스: 호텔 소재지는 지방인데 서울에 영업·예약 사무소가 있는 시설
+function hasSeoulOffice(o){return !!(o.seoul&&String(o.seoul).trim())&&o.city!=='Seoul';}
 function renderMyHotel(base){
+ const all=base;
+ const sN=all.filter(hasSeoulOffice).length;
+ if(state.seoulOnly)base=base.filter(hasSeoulOffice);
+ const bs=document.getElementById('btnSeoul');
+ if(bs){bs.classList.toggle('on',!!state.seoulOnly);bs.innerHTML='<svg class="ic"><use href="#i-building"/></svg> 서울오피스 '+sN+'곳만'+(state.seoulOnly?' ✓':'');}
  const byst=x=>base.filter(o=>(o.status||'')===x).length;
  const rooms=base.reduce((a,o)=>a+(o.rooms||0),0);
- const tt=base.length||1;const pv=v=>Math.round(v/tt*100)+'%';const cards=[['총 담당',base.length+'시설','100%'],['운영 Active',byst('Active')+'시설',pv(byst('Active'))],['대기 Pending',byst('Pending')+'시설',pv(byst('Pending'))],['중단 Suspended',byst('Suspended')+'시설',pv(byst('Suspended'))]];
+ const tt=base.length||1;const pv=v=>Math.round(v/tt*100)+'%';const cards=[['총 담당',base.length+'시설','100%'],['운영 Active',byst('Active')+'시설',pv(byst('Active'))],['대기 Pending',byst('Pending')+'시설',pv(byst('Pending'))],['중단 Suspended',byst('Suspended')+'시설',pv(byst('Suspended'))],['서울오피스 보유',sN+'시설',(state.seoulOnly?'필터 적용중':Math.round(sN/(all.length||1)*100)+'% / 전체')]];
  document.getElementById('myKpi').innerHTML=cards.map(c=>`<div class="wkc"><div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}</div></div>`).join('');
  function full26(o){const mi=MI[state.m];let s=0;const r=o.mon.cout||{};for(const ym in r)if(ym.slice(0,4)==='2026')s+=r[ym][mi];return s;}
- const head=['No','대지역','소지역','세부지역','계약상태','분류','코드','호텔명','체인','성급','객실수','26'+MLAB[state.m]+(state.m==='r'?'(박)':'(원)'),'PIC'];
- const L=new Set([1,2,3,4,5,6,7,8,12]);
+ const head=['No','대지역','소지역','세부지역','서울오피스','계약상태','분류','코드','호텔명','체인','성급','객실수','26'+MLAB[state.m]+(state.m==='r'?'(박)':'(원)'),'PIC'];
+ const L=new Set([1,2,3,4,5,6,7,8,9,13]);
  document.querySelector('#myTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${L.has(i)?'l':''}">${h}</th>`).join('')+'</tr>';
  const STC={'Active':'grow','Pending':'new','Suspended':'churn','ing':'keep'};
  const rows=base.slice().sort((a,b)=>full26(b)-full26(a));myExportRows=rows;
- document.querySelector('#myTbl tbody').innerHTML=rows.map((o,i)=>`<tr><td>${i+1}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l" style="color:#999">${o.area||''}</td><td class="l"><span class="badge b-${STC[o.status]||'none'}">${o.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.chain}</td><td>${o.star||'-'}</td><td>${o.rooms?Math.round(o.rooms):'-'}</td><td>${state.m==='r'?Math.round(full26(o)).toLocaleString():bm(full26(o))}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`).join('');
+ document.querySelector('#myTbl tbody').innerHTML=rows.map((o,i)=>`<tr><td>${i+1}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l" style="color:#999">${o.area||''}</td><td class="l">${hasSeoulOffice(o)?'<span class="badge b-new" title="서울 영업·예약 사무소 '+o.seoul+'">'+(String(o.seoul).trim()==='O'?'O':o.seoul)+'</span>':'<span style="color:#ddd">-</span>'}</td><td class="l"><span class="badge b-${STC[o.status]||'none'}">${o.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.chain}</td><td>${o.star||'-'}</td><td>${o.rooms?Math.round(o.rooms):'-'}</td><td>${state.m==='r'?Math.round(full26(o)).toLocaleString():bm(full26(o))}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`).join('');
 }
 function showNoRev(){const isNoRev=state.cats.size===2&&state.cats.has('무거래')&&state.cats.has('이탈');if(isNoRev){state.cats=new Set(CATLABEL);}else{state.cats=new Set(['무거래','이탈']);if(!state.status.has('Active')){state.status=new Set(['Active']);document.querySelectorAll('.stchk').forEach(c=>c.checked=(c.value==='Active'));syncStAll();}}state.view='main';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v==='main'));['main','myhotel','weekly','pickup','promo','contrib'].forEach(v=>document.getElementById('view'+v[0].toUpperCase()+v.slice(1)).style.display=state.view===v?'':'none');render();}
 function promoStatus(o){const t=new Date();t.setHours(0,0,0,0);
