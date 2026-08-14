@@ -125,7 +125,7 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Sales Dashboard</h1>
 <div class="sub">담당 <span id="facN">311</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-14 09:33 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-14 · 프로모션 2026-08-10</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
+<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-14 09:53 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-14 · 프로모션 2026-08-10</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -305,13 +305,14 @@ function exportTable(tid,name){
 function exportWatch(){
  const rows=window.__watchRows||[];const L=window.__watchLbl||'';
  if(!rows.length){alert('내보낼 주의 시설이 없습니다.');return;}
- const head=['사유','호텔코드','시설명','소지역','세부지역',L+' RN',L+' 매출',L+' 마진','전년 '+L+' RN','전년 '+L+' 매출','손실(선택지표)','취소율','프로모션 상태','프로모션 D-','PIC','계약상태','체인'];
+ const head=['사유','호텔코드','시설명','소지역','세부지역',L+' RN',L+' 매출',L+' 마진','전년 '+L+' RN','전년 '+L+' 매출','손실(선택지표)','취소율','프로모션 상태','프로모션 D-','마지막 미팅','마지막 통화','최종 접촉 경과(일)','PIC','계약상태','체인'];
  const lines=[head.map(csvEsc).join(',')];
  rows.forEach(it=>{const o=it.o;
   lines.push([it.R.map(r=>r[0]).join(' / '),dcode(o),o.name,o.city,o.area||'',
    Math.round(it.rn),Math.round(it.sell),Math.round(it.mg),
    Math.round(it.pv[0]),Math.round(it.pv[1]),Math.round(it.loss||0),
    (it.cr*100).toFixed(1)+'%',it.ps.st,(it.ps.days==null?'':(it.ps.days<0?it.ps.days+'일':'D-'+it.ps.days)),
+   (o.lmeet||''),(o.lcall||''),(contactInfo(o).gap===null?'기록없음':contactInfo(o).gap),
    o.pic,o.status,o.chain||''].map(csvEsc).join(','));});
  dlCSV(lines.join('\r\n'),'주의시설_'+L.replace(/[()]/g,''));
 }
@@ -603,8 +604,8 @@ function renderWatch(base){
  const shown=items.filter(it=>it.R.some(r=>!watchHide.has(r[2])));
  window.__watchRows=shown;window.__watchLbl=refLbl;
  const inl=(a,b)=>b>0?` <span style="font-size:8.5px;color:${a>=b?'#2e9e5b':'#D0454B'};font-weight:700">${a>=b?'▲':'▼'}${Math.abs((a-b)/b*100).toFixed(0)}%</span>`:'';
- const WMAX_ROWS=50;const rowsH=shown.slice(0,WMAX_ROWS).map(it=>{const o=it.o;const rc=it.R.map(r=>`<span class="badge b-${r[1]}" style="margin:1px 2px">${r[0]}</span>`).join('');const pd=it.ps.days!=null?(it.ps.days<0?it.ps.days+'일':'D-'+it.ps.days):'';return `<tr><td class="l">${rc}</td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.city}</td><td class="l" style="color:#999">${o.area||'-'}</td><td>${won(it.rn)}${inl(it.rn,it.pv[0])}</td><td>${bm(it.sell)}${inl(it.sell,it.pv[1])}</td><td>${bm(it.mg)}${inl(it.mg,it.pv[2])}</td><td>${Math.round(it.cr*100)}%</td><td class="l">${it.ps.st}${pd?' ('+pd+')':''}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`;}).join('');
- wrap.innerHTML=`<div class="card" style="border-left:4px solid var(--o)"><h3><svg class="ic"><use href="#i-alert"/></svg> 주의 시설 <b style="color:var(--od)">${shown.length}곳</b>${items.length!==shown.length?` <span style="font-size:11px;color:var(--gray)">(사유 필터 적용 · 전체 ${items.length}곳)</span>`:''}${shown.length>WMAX_ROWS?` <span style="font-size:11px;color:#D0454B;font-weight:700">· 화면에는 상위 ${WMAX_ROWS}곳만 표시</span>`:''} <button class="miniBtn" onclick="exportWatch()" style="margin-left:8px" title="주의 시설 전체 목록을 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> 목록 CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— <b>${refLbl}</b> 기준(성과=이번 달·프로모션=날짜) · 현재 필터 · <b>손실 규모순</b> 정렬 · 호텔명 클릭 → 카드</span></h3><div style="margin:6px 0 10px">${chips}</div><div class="tbl-wrap" style="max-height:320px"><table id="watchTbl" class="sortable"><thead><tr><th class="l">사유</th><th class="l">코드</th><th class="l">시설명</th><th class="l">소지역</th><th class="l">세부지역</th><th>${refLbl} RN</th><th>${refLbl} 매출</th><th>${refLbl} 마진</th><th>취소율</th><th class="l">프로모션</th><th class="l">PIC</th></tr></thead><tbody>${rowsH}</tbody></table></div></div>`;
+ const WMAX_ROWS=50;const rowsH=shown.slice(0,WMAX_ROWS).map(it=>{const o=it.o;const rc=it.R.map(r=>`<span class="badge b-${r[1]}" style="margin:1px 2px">${r[0]}</span>`).join('');const pd=it.ps.days!=null?(it.ps.days<0?it.ps.days+'일':'D-'+it.ps.days):'';return `<tr><td class="l">${rc}</td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.city}</td><td class="l" style="color:#999">${o.area||'-'}</td><td>${won(it.rn)}${inl(it.rn,it.pv[0])}</td><td>${bm(it.sell)}${inl(it.sell,it.pv[1])}</td><td>${bm(it.mg)}${inl(it.mg,it.pv[2])}</td><td>${Math.round(it.cr*100)}%</td><td class="l">${it.ps.st}${pd?' ('+pd+')':''}</td>${watchContactTd(o)}<td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`;}).join('');
+ wrap.innerHTML=`<div class="card" style="border-left:4px solid var(--o)"><h3><svg class="ic"><use href="#i-alert"/></svg> 주의 시설 <b style="color:var(--od)">${shown.length}곳</b>${items.length!==shown.length?` <span style="font-size:11px;color:var(--gray)">(사유 필터 적용 · 전체 ${items.length}곳)</span>`:''}${shown.length>WMAX_ROWS?` <span style="font-size:11px;color:#D0454B;font-weight:700">· 화면에는 상위 ${WMAX_ROWS}곳만 표시</span>`:''} <button class="miniBtn" onclick="exportWatch()" style="margin-left:8px" title="주의 시설 전체 목록을 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> 목록 CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— <b>${refLbl}</b> 기준(성과=이번 달·프로모션=날짜) · 현재 필터 · <b>손실 규모순</b> 정렬 · 호텔명 클릭 → 카드 · 최종 접촉은 미팅·통화 중 최근 것(50일 초과 주황·180일 초과 빨강)</span></h3><div style="margin:6px 0 10px">${chips}</div><div class="tbl-wrap" style="max-height:320px"><table id="watchTbl" class="sortable"><thead><tr><th class="l">사유</th><th class="l">코드</th><th class="l">시설명</th><th class="l">소지역</th><th class="l">세부지역</th><th>${refLbl} RN</th><th>${refLbl} 매출</th><th>${refLbl} 마진</th><th>취소율</th><th class="l">프로모션</th><th class="l">최종 접촉</th><th class="l">PIC</th></tr></thead><tbody>${rowsH}</tbody></table></div></div>`;
 }
 function renderSummary(base){
  const y=state.year;const wonN=v=>Math.round(v).toLocaleString();
@@ -987,6 +988,15 @@ function contactInfo(o){
  const gap=last.length?Math.min.apply(null,last):null;
  return {m:o.lmeet||'',c:o.lcall||'',dm:dm,dc:dc,gap:gap,n:o.ncont||0,
          stale:(gap===null||gap>CONTACT_TH)};
+}
+function watchContactTd(o){
+ const ci=contactInfo(o);
+ const tip=`\u{1F91D} 미팅 ${ci.m||'기록 없음'}${ci.dm!=null?' (D+'+ci.dm+')':''}  |  \u{1F4DE} 통화 ${ci.c||'기록 없음'}${ci.dc!=null?' (D+'+ci.dc+')':''}`;
+ if(ci.gap===null) return `<td class="l" style="color:#bbb" title="${tip}">기록 없음</td>`;
+ const byMeet=(ci.dm!=null&&ci.dm===ci.gap);
+ const ds=byMeet?ci.m:ci.c, kind=byMeet?'미팅':'통화';
+ const col=ci.gap>180?'#C0392B':(ci.gap>CONTACT_TH?'#E55600':'#1F7A1F');
+ return `<td class="l" style="color:${col};white-space:nowrap" title="${tip}">${ds} <span style="font-size:9px;color:var(--gray)">${kind}</span> <b style="font-weight:${ci.gap>CONTACT_TH?700:400}">${ci.gap}일</b></td>`;
 }
 function dcell(ds,days){
  if(!ds)return '<span style="color:#ddd">기록 없음</span>';
