@@ -89,11 +89,14 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 .tabs{display:flex;gap:6px;margin:12px 0 2px;border-bottom:2px solid #f0e7e0}
 .tab{border:0;background:none;padding:9px 16px;font-family:inherit;font-size:13px;font-weight:700;color:var(--gray);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
 .tab.on{color:var(--od);border-bottom-color:var(--o)}
-.wkkpi{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
-.wkc{flex:1;min-width:120px;background:#fff;border-radius:12px;padding:11px 13px;box-shadow:0 2px 8px rgba(0,0,0,.04);border:1px solid #f0e7e0}
+.wkkpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0}
+#wkKpi{grid-template-columns:repeat(8,minmax(0,1fr))}
+@media(max-width:1280px){#wkKpi{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:720px){.wkkpi,#wkKpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.wkc{min-width:0;background:#fff;border-radius:12px;padding:11px 13px;box-shadow:0 2px 8px rgba(0,0,0,.04);border:1px solid #f0e7e0}
 .wkc .t{font-size:10.5px;color:var(--gray)} .wkc .v{font-size:18px;font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .wkc .u{font-size:10px;color:#bbb}
-.wkc .u2{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;line-height:1.5}
-.wkc .base{font-size:10px;color:#b0a49b;white-space:nowrap}
+.wkc .u2{margin-top:7px;min-width:0}
+.wkc .base{display:block;margin-top:5px;font-size:10px;color:#b0a49b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dpill{display:inline-flex;align-items:baseline;gap:4px;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;line-height:1.6;white-space:nowrap}
 .dpill i{font-style:normal;font-weight:700;font-size:10px;opacity:.8}
 .dpill.up{background:#e6f4ec;color:#1B7A45;border:1px solid #bfe3cf}
@@ -132,7 +135,7 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Sales Dashboard</h1>
 <div class="sub">담당 <span id="facN">311</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-19 13:58 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-14 · 프로모션 2026-08-17</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
+<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-19 14:16 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-14 · 프로모션 2026-08-17</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -245,6 +248,7 @@ function fmtDisc(v){if(v==null||v==='')return '';let str=String(v).trim();const 
 const eok=v=>(v/1e8).toFixed(1);
 const bm=v=>Math.round(v).toLocaleString();
 const abbr=v=>{const a=Math.abs(v);return a>=1e8?(v/1e8).toFixed(1)+'억':a>=1e4?Math.round(v/1e4).toLocaleString()+'만':Math.round(v).toLocaleString();};
+const mAbb=v=>{const a=Math.abs(v);if(a>=1e8)return (v/1e8).toFixed(a>=1e10?0:a>=1e9?1:2)+'억';if(a>=1e4)return Math.round(v/1e4).toLocaleString()+'만';return Math.round(v).toLocaleString();};
 const koRead=n=>{n=Math.round(n);if(n===0)return '0';const neg=n<0;n=Math.abs(n);const uk=Math.floor(n/1e8),ma=Math.floor((n%1e8)/1e4),rem=n%1e4;let x='';if(uk)x+=uk+'억';if(ma)x+=(x?' ':'')+ma.toLocaleString()+'만';if(rem)x+=(x?' ':'')+rem.toLocaleString();return (neg?'-':'')+x;};
 const isW=()=>state.m!=='r';
 const big=v=>isW()?bm(v)+'원':won(v)+'박';
@@ -636,7 +640,8 @@ function renderReport(base){
  document.querySelectorAll('#perSeg button').forEach(b=>b.classList.toggle('on',b.dataset.p===per));
  const cmpY=state.cmpYear;
  document.getElementById('repMeta').innerHTML='· <b>'+y+'년</b> vs <b style="color:var(--od)">'+cmpY+'년</b> · '+basisL+' 기준 · 이 탭의 모든 증감은 <b>'+cmpY+'년 동기간</b> 대비입니다';
- // cmpYearconst _cs=document.getElementById('cmpYear');_cs.innerHTML=YEARS.slice().reverse().map(yy=>`<option value="${yy}" ${yy===cmpY?'selected':''}>${yy}</option>`).join('');_cs.onchange=e=>{state.cmpYear=+e.target.value;render();};
+ // cmpYear 셀렉트 채우기
+ const _cs=document.getElementById('cmpYear');_cs.innerHTML=YEARS.slice().reverse().map(yy=>`<option value="${yy}" ${yy===cmpY?'selected':''}>${yy}</option>`).join('');_cs.onchange=e=>{state.cmpYear=+e.target.value;render();};
  // ---- KPI strip (연간 요약) ----
  const actM=state.month==='all'?[...activeMonths(base,state.year)]:[+state.month];const smset=new Set(actM);
  let cnt=0,rn=0,sell=0,mg=0,canc=0,lds=0,ldn=0,los=0,losn=0,pcnt=0,prn=0,psell=0,pmg=0,pcanc=0,plds=0,pldn=0,plos=0,plosn=0;
@@ -650,12 +655,13 @@ function renderReport(base){
  const adr=rn?sell/rn:0,padr=prn?psell/prn:0,mp=sell?mg/sell*100:0,pmp=psell?pmg/psell*100:0,lt=ldn?lds/ldn:0,plt=pldn?plds/pldn:0,ls=losn?los/losn:0,pls=plosn?plos/plosn:0,cr=(cnt+canc)?canc/(cnt+canc)*100:0,pcr=(pcnt+pcanc)?pcanc/(pcnt+pcanc)*100:0;
  const _fCnt=v=>Math.round(v).toLocaleString()+'건',_fRn=v=>Math.round(v).toLocaleString()+'박',_fW=v=>bm(v)+'원',
        _fP=v=>v.toFixed(1)+'p',_fA=v=>'\u20a9'+Math.round(v).toLocaleString(),_fD=v=>v.toFixed(1)+'일',_fL=v=>v.toFixed(2)+'박';
+ const _fWa=v=>mAbb(v)+'원';
  const _cy=cmpY+'년 ';
  const kc=[
-  ['총 예약건수',cnt.toLocaleString(),pcnt>0?_cy+pcnt.toLocaleString()+'건':_cy+'실적 없음',dpill(cnt,pcnt,_fCnt)],
-  ['ROOM NIGHTS',Math.round(rn).toLocaleString(),prn>0?_cy+koRead(prn)+'박':_cy+'실적 없음',dpill(rn,prn,_fRn)],
-  ['TTV (수탁고)',bm(sell)+'원',psell>0?_cy+koRead(psell)+'원':_cy+'실적 없음',dpill(sell,psell,_fW)],
-  ['MARGIN (마진율)',bm(mg)+'원 · '+mp.toFixed(1)+'%',pmg>0?_cy+koRead(pmg)+'원 · '+pmp.toFixed(1)+'%':_cy+'실적 없음',dpill(mg,pmg,_fW)],
+  ['총 예약건수',cnt.toLocaleString()+'건',pcnt>0?_cy+pcnt.toLocaleString()+'건':_cy+'실적 없음',dpill(cnt,pcnt,_fCnt)],
+  ['ROOM NIGHTS',Math.round(rn).toLocaleString()+'박',prn>0?_cy+Math.round(prn).toLocaleString()+'박':_cy+'실적 없음',dpill(rn,prn,_fRn)],
+  ['TTV (수탁고)',mAbb(sell)+'원',psell>0?_cy+mAbb(psell)+'원':_cy+'실적 없음',dpill(sell,psell,_fWa)],
+  ['MARGIN (마진율)',mAbb(mg)+'원 · '+mp.toFixed(1)+'%',pmg>0?_cy+mAbb(pmg)+'원 · '+pmp.toFixed(1)+'%':_cy+'실적 없음',dpill(mg,pmg,_fWa)],
   ['ADR (객단가)','\u20a9'+Math.round(adr).toLocaleString(),padr>0?_cy+'\u20a9'+Math.round(padr).toLocaleString():_cy+'-',dpill(adr,padr,_fA)],
   ['평균 리드타임',lt.toFixed(1)+'일',plt>0?_cy+plt.toFixed(1)+'일':_cy+'-',dpill(lt,plt,_fD)],
   ['LOS (숙박일)',ls.toFixed(2)+'박',pls>0?_cy+pls.toFixed(2)+'박':_cy+'-',dpill(ls,pls,_fL)],
