@@ -170,7 +170,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-25 16:32 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-25 17:08 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -249,7 +249,7 @@ th.meCol{background:var(--od)}
 <div class="wkkpi" id="prKpi"></div>
 <div id="prFilter" style="margin:0 0 10px"></div>
 <div class="card" style="margin-bottom:12px"><h3>프로모션 유형 분포 <span style="font-weight:400;color:var(--gray);font-size:11px">— 유형별 적용 시설 수</span></h3><div id="prTypes"></div></div>
-<div class="card"><h3><svg class="ic"><use href="#i-ticket"/></svg> 프로모션 현황<button class="miniBtn" onclick="exportTable('prTbl','프로모션현황')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 종료일·상태 · 행 클릭 시 호텔 카드 · 종료임박순 정렬</span></h3>
+<div class="card"><h3><svg class="ic"><use href="#i-ticket"/></svg> 프로모션 현황 <span id="prScope" style="font-weight:400;color:var(--gray);font-size:11px"></span><button class="miniBtn" onclick="exportTable('prTbl','프로모션현황')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 종료일·상태 · 행 클릭 시 호텔 카드 · 종료임박순 정렬</span></h3>
 <div class="tbl-wrap" style="max-height:600px"><table id="prTbl" class="sortable"><thead></thead><tbody></tbody></table></div></div>
 </div>
 <div class="foot">OHMYHOTEL&CO Regional SCM · Dodo's Dashboard · 로데이터 자동집계</div>
@@ -1182,6 +1182,15 @@ function promoStatus(o){const t=new Date();t.setHours(0,0,0,0);
  const days=Math.round((ce-t)/864e5);if(days<0)return{st:'만료',end:o.pcend,days};if(days<=45)return{st:'종료임박',end:o.pcend,days};return{st:'유지',end:o.pcend,days};}
 function renderPromo(base){
  let rows=base.map(o=>({o,...promoStatus(o)}));
+ // 260825: 마지막 열을 '26 연간 매출' → '해당월 실적'으로 (프로모션은 그 달 판매에 걸리는 것이므로)
+ const _now=new Date();let refM=0;
+ if(state.month!=='all'){refM=+state.month;}
+ else{const cand=(state.year<_now.getFullYear())?12:(state.year>_now.getFullYear()?1:_now.getMonth()+1);
+      let has=false;base.forEach(o=>{const r=rec(o,state.b);const k=''+state.year+String(cand).padStart(2,'0');if(r[k]&&(r[k][0]>0||r[k][1]>0))has=true;});
+      if(has)refM=cand;else{base.forEach(o=>{const r=rec(o,state.b);for(const ym in r){if(+ym.slice(0,4)===state.year&&r[ym][1]>0){const m=+ym.slice(4);if(m<=cand&&m>refM)refM=m;}}});if(!refM)refM=cand;}}
+ const _pmSet=new Set([refM]);
+ const pmVal=o=>sumScope(o,state.year,_pmSet);
+ const pmLab=refM+'월 '+MLAB[state.m]+(state.m==='r'?'(박)':'(원)');
  const live=rows.filter(r=>['유지','상시','종료임박'].includes(r.st)).length;
  const noP=rows.filter(r=>r.st==='영업필요').length,noPrev=rows.filter(r=>r.st==='미적용(매출有)').length,soon=rows.filter(r=>r.st==='종료임박').length,exp=rows.filter(r=>r.st==='만료').length;
  const TYPES=['기본할인','얼리버드','라스트미닛','연박','환불불가','회원'];const tc={};TYPES.forEach(t=>tc[t]=base.filter(o=>(o.ptypes||[]).includes(t)).length);
@@ -1203,6 +1212,8 @@ function renderPromo(base){
    return `<div class="wkc${clickable?' prCard':''}${on?' on':''}"${clickable?` onclick="prPick(${i})" title="클릭하면 이 상태의 시설만 표에 표시됩니다"`:''}>`
      +`<div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}${clickable?`<span class="prHint">${on?'해제':'보기'}</span>`:''}</div></div>`;}).join('');
  window.__prKpiSets=KPI.map(c=>c[3]);
+ const _ps=document.getElementById('prScope');
+ if(_ps)_ps.textContent=`— 마지막 열은 ${state.year}년 ${refM}월 ${MLAB[state.m]} (상단 월·지표 토글 반영)`;
  const maxc=Math.max(...TYPES.map(t=>tc[t]),1);
  document.getElementById('prTypes').innerHTML=TYPES.slice().sort((a,b)=>tc[b]-tc[a]).map(t=>`<div class="mixrow"><span class="nm">${t}</span><span class="mixbar"><i style="width:${tc[t]/maxc*100}%"></i></span><span class="pc">${tc[t]}</span></div>`).join('');
  // 260825: 상태 칩 필터 — '미세팅'(영업필요+미적용)만 보기 등
@@ -1222,10 +1233,10 @@ function renderPromo(base){
  rows=rows.filter(r=>!prHide.has(r.st));
  const rank={'종료임박':0,'만료':1,'영업필요':2,'미적용(매출有)':3,'유지':4,'상시':5};
  rows.sort((a,b)=>{const d=rank[a.st]-rank[b.st];if(d)return d;return (a.days==null?9999:a.days)-(b.days==null?9999:b.days);});
- const head=['상태','코드','호텔명','대지역','소지역','PIC','프로모션수','유형','할인율','판매','종료일','D-day','26매출'];const L=new Set([0,1,2,3,4,5,7]);
+ const head=['상태','코드','호텔명','대지역','소지역','PIC','프로모션수','유형','할인율','판매','종료일','D-day',pmLab];const L=new Set([0,1,2,3,4,5,7]);
  document.querySelector('#prTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${L.has(i)?'l':''}">${h}</th>`).join('')+'</tr>';
  const CLS={'종료임박':'new','만료':'drop','영업필요':'churn','미적용(매출有)':'keep','유지':'grow','상시':'grow'};
- document.querySelector('#prTbl tbody').innerHTML=rows.map(r=>{const o=r.o;const hasPct=(o.promos||[]).some(x=>String(x[1]).includes('%'));const rs=(o.promos||[]).map(x=>parseFloat(String(x[1]).replace(/[,%]/g,''))).filter(v=>!isNaN(v));const dfmt=v=>hasPct?v+'%':Math.round(v).toLocaleString()+'원';const dr=rs.length?(Math.min(...rs)===Math.max(...rs)?dfmt(rs[0]):dfmt(Math.min(...rs))+'~'+dfmt(Math.max(...rs))):'-';const s26=Object.entries(o.mon.cout||{}).filter(e=>e[0].slice(0,4)==='2026').reduce((a,e)=>a+e[1][1],0);return `<tr><td class="l"><span class="badge b-${CLS[r.st]}">${r.st}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td><td>${(o.promos||[]).length||'-'}</td><td class="l" style="font-size:10.5px">${(o.ptypes||[]).join('·')||'-'}</td><td style="font-weight:700;color:var(--od)">${dr}</td><td>${(o.promos||[]).length?(o.popen?'<span style=\'color:#4A8C63;font-weight:700\'>오픈</span>':'<span style=\'color:#A85A5A;font-weight:700\'>미오픈</span>'):'-'}</td><td>${r.end}</td><td>${r.days==null?'-':(r.days<0?r.days+'일':'D-'+r.days)}</td><td>${bm(s26)}</td></tr>`;}).join('')||`<tr><td colspan="13" style="color:#bbb;padding:16px;text-align:center">해당 상태의 시설이 없습니다 — 위 카드나 상태 칩을 다시 눌러 전체를 보세요</td></tr>`;
+ document.querySelector('#prTbl tbody').innerHTML=rows.map(r=>{const o=r.o;const hasPct=(o.promos||[]).some(x=>String(x[1]).includes('%'));const rs=(o.promos||[]).map(x=>parseFloat(String(x[1]).replace(/[,%]/g,''))).filter(v=>!isNaN(v));const dfmt=v=>hasPct?v+'%':Math.round(v).toLocaleString()+'원';const dr=rs.length?(Math.min(...rs)===Math.max(...rs)?dfmt(rs[0]):dfmt(Math.min(...rs))+'~'+dfmt(Math.max(...rs))):'-';const s26=pmVal(o);return `<tr><td class="l"><span class="badge b-${CLS[r.st]}">${r.st}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td><td>${(o.promos||[]).length||'-'}</td><td class="l" style="font-size:10.5px">${(o.ptypes||[]).join('·')||'-'}</td><td style="font-weight:700;color:var(--od)">${dr}</td><td>${(o.promos||[]).length?(o.popen?'<span style=\'color:#4A8C63;font-weight:700\'>오픈</span>':'<span style=\'color:#A85A5A;font-weight:700\'>미오픈</span>'):'-'}</td><td>${r.end}</td><td>${r.days==null?'-':(r.days<0?r.days+'일':'D-'+r.days)}</td><td>${state.m==='r'?Math.round(s26).toLocaleString():bm(s26)}</td></tr>`;}).join('')||`<tr><td colspan="13" style="color:#bbb;padding:16px;text-align:center">해당 상태의 시설이 없습니다 — 위 카드나 상태 칩을 다시 눌러 전체를 보세요</td></tr>`;
 }
 document.querySelectorAll('.dimm').forEach(b=>b.onclick=()=>{document.querySelectorAll('.dimm').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.dimMode=b.dataset.m;render();});
 document.querySelectorAll('.ctdim').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ctdim').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.ctdim=b.dataset.d;render();});
