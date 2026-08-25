@@ -106,6 +106,24 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 th.meCol{background:var(--od)}
 .mineDot{display:inline-block;background:var(--ol);color:var(--od);border-radius:9px;padding:0 6px;font-size:10px;font-weight:700;margin-left:4px}
 .meTag{color:var(--od)}
+.note>details>summary{cursor:pointer;list-style:none;color:var(--dk)}
+.note>details>summary::-webkit-details-marker{display:none}
+.note>details>summary::after{content:' ▸';color:var(--od);font-size:10px}
+.note>details[open]>summary::after{content:' ▾'}
+.prCard{cursor:pointer;transition:border-color .12s,box-shadow .12s}
+.prCard:hover{border-color:var(--od);box-shadow:0 2px 10px rgba(168,112,90,.15)}
+.prCard.on{border-color:var(--od);background:var(--oll);box-shadow:inset 0 0 0 1px var(--od)}
+.prHint{float:right;color:var(--od);font-weight:700;font-size:10px;border:1px solid var(--ol);border-radius:8px;padding:0 5px;background:#fff}
+.prCard.on .prHint{background:var(--od);color:#fff;border-color:var(--od)}
+.insmore{list-style:none;margin-top:6px}
+.insmore>details>summary{display:inline-flex;align-items:center;gap:5px;cursor:pointer;color:var(--od);background:var(--oll);border:1px solid var(--ol);border-radius:999px;
+ font-size:11.5px;font-weight:700;list-style:none;padding:4px 12px;transition:background .12s,border-color .12s;user-select:none}
+.insmore>details>summary:hover{background:var(--ol);border-color:var(--od)}
+.insmore>details>summary::-webkit-details-marker{display:none}
+.insmore>details>summary::before{content:'▾';font-size:10px;transition:transform .12s;display:inline-block}
+.insmore>details[open]>summary::before{transform:rotate(180deg)}
+.insmore>details>ul{margin:4px 0 0;padding-left:0;list-style:none}
+.insmore>details>ul>li{margin:3px 0}
 .oldbanner{background:#F5F1ED;border:1px solid var(--ol);border-left:4px solid var(--od);border-radius:8px;padding:11px 14px;margin:0 0 14px;font-size:12.5px;line-height:1.6;color:#7A6357}
 .oldbanner .note2{margin-top:6px;font-size:11px;color:#a08b7c;line-height:1.55}
 .oldbanner .miniBtn{margin-left:8px}
@@ -152,7 +170,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><svg class="ic"><use href="#i-pin"/></svg> <b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-clock"/></svg> 빌드 2026-08-25 16:15 KST · <svg class="ic"><use href="#i-calendar"/></svg> 데이터: 실적 2026-08-21 · 프로모션 2026-08-24</span><svg class="ic"><use href="#i-tag"/></svg> <b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) · <svg class="ic"><use href="#i-refresh"/></svg> <b>갱신</b>=2026분 매주 금요일(23~25 확정)</div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-25 16:32 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -229,6 +247,7 @@ th.meCol{background:var(--od)}
 </div>
 <div id="viewPromo" style="display:none">
 <div class="wkkpi" id="prKpi"></div>
+<div id="prFilter" style="margin:0 0 10px"></div>
 <div class="card" style="margin-bottom:12px"><h3>프로모션 유형 분포 <span style="font-weight:400;color:var(--gray);font-size:11px">— 유형별 적용 시설 수</span></h3><div id="prTypes"></div></div>
 <div class="card"><h3><svg class="ic"><use href="#i-ticket"/></svg> 프로모션 현황<button class="miniBtn" onclick="exportTable('prTbl','프로모션현황')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 종료일·상태 · 행 클릭 시 호텔 카드 · 종료임박순 정렬</span></h3>
 <div class="tbl-wrap" style="max-height:600px"><table id="prTbl" class="sortable"><thead></thead><tbody></tbody></table></div></div>
@@ -267,7 +286,13 @@ function fmtDisc(v){if(v==null||v==='')return '';let str=String(v).trim();const 
 const eok=v=>(v/1e8).toFixed(1);
 const bm=v=>Math.round(v).toLocaleString();
 const abbr=v=>{const a=Math.abs(v);return a>=1e8?(v/1e8).toFixed(1)+'억':a>=1e4?Math.round(v/1e4).toLocaleString()+'만':Math.round(v).toLocaleString();};
-const mAbb=v=>{const a=Math.abs(v);if(a>=1e8)return (v/1e8).toFixed(a>=1e10?0:a>=1e9?1:2)+'억';if(a>=1e4)return Math.round(v/1e4).toLocaleString()+'만';return Math.round(v).toLocaleString();};
+// 한국식 읽기 — 52억 4,509만 / 1,463만 / 9,500 (260825 담당자 확정: 소수 억 표기가 익숙치 않음)
+const mAbb=v=>{const neg=v<0;let n=Math.round(Math.abs(v));if(!n)return '0';
+ const uk=Math.floor(n/1e8),man=Math.floor((n%1e8)/1e4);let t='';
+ if(uk){t=uk.toLocaleString()+'억';if(man)t+=' '+man.toLocaleString()+'만';}
+ else if(man){t=man.toLocaleString()+'만';const rem=n%1e4;if(!uk&&man<10&&rem)t+=' '+rem.toLocaleString();}
+ else t=n.toLocaleString();
+ return (neg?'-':'')+t;};
 const koRead=n=>{n=Math.round(n);if(n===0)return '0';const neg=n<0;n=Math.abs(n);const uk=Math.floor(n/1e8),ma=Math.floor((n%1e8)/1e4),rem=n%1e4;let x='';if(uk)x+=uk+'억';if(ma)x+=(x?' ':'')+ma.toLocaleString()+'만';if(rem)x+=(x?' ':'')+rem.toLocaleString();return (neg?'-':'')+x;};
 const isW=()=>state.m!=='r';
 const big=v=>isW()?bm(v)+'원':won(v)+'박';
@@ -427,7 +452,15 @@ function render(){
  ['myTbl','prTbl','contribTbl','watchTbl','pkTbl'].forEach(id=>enhanceSort(document.getElementById(id)));
  esortDirty=false;updSortBtn();
 }
-function insBlocks(bl){return bl.filter(b=>b[1]&&b[1].length).map(b=>`<li class="insh">${b[0]}</li>`+b[1].map(l=>`<li>${l}</li>`).join('')).join('');}
+// 블록당 상위 OPEN_N 개만 펼치고 나머지는 <details> 로 접음 (260825 — 항목이 15~17개라 안 읽힘)
+const INS_OPEN=3;
+function insBlocks(bl){return bl.filter(b=>b[1]&&b[1].length).map(b=>{
+  const head=`<li class="insh">${b[0]}</li>`;
+  const top=b[1].slice(0,INS_OPEN).map(l=>`<li>${l}</li>`).join('');
+  const rest=b[1].slice(INS_OPEN);
+  if(!rest.length)return head+top;
+  return head+top+`<li class="insmore"><details><summary>${rest.length}개 더 보기</summary><ul>${rest.map(l=>`<li>${l}</li>`).join('')}</ul></details></li>`;
+}).join('');}
 function renderInsights(base,MO){
  const cur=base.reduce((a,o)=>a+o._cur,0),prev=base.reduce((a,o)=>a+o._prev,0);
  const grows=base.filter(o=>o._cat==='성장').sort((a,b)=>(b._cur-b._prev)-(a._cur-a._prev));
@@ -832,6 +865,18 @@ function renderCoverage(){
  const sub=document.getElementById('covSub');
  if(sub)sub.innerHTML=`— <b>한국 전체 ${(COV._기준.총||0).toLocaleString()}곳</b> · 팀 인벤토리 <code>${COV._기준.파일}</code> 기준 · 계약상태=전체 / 담당자=Active · <b class="meTag">Dodo</b> 열이 내 담당`;
 }
+const ORDALL=['종료임박','만료','영업필요','미적용(매출有)','유지','상시'];
+let prHide=new Set();
+function prTog(k){if(prHide.has(k))prHide.delete(k);else prHide.add(k);render();}
+function prPick(i){                     // KPI 카드 클릭 — 해당 상태만 남김. 같은 카드 재클릭 시 전체 복원
+  const set=(window.__prKpiSets||[])[i]; if(!set) return;
+  const on=set.every(k=>!prHide.has(k))&&ORDALL.filter(k=>!set.includes(k)).every(k=>prHide.has(k));
+  prHide=on?new Set():new Set(ORDALL.filter(k=>!set.includes(k)));
+  render();
+  const t=document.getElementById('prTbl'); if(t)t.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function prOnlyNoset(){prHide=new Set(ORDALL.filter(k=>!['영업필요','미적용(매출有)'].includes(k)));render();}
+function prAllShow(){prHide.clear();render();}
 let watchHide=new Set();
 function toggleWatch(c){if(watchHide.has(c))watchHide.delete(c);else watchHide.add(c);render();}
 function watchAllShow(){watchHide.clear();render();}
@@ -942,7 +987,8 @@ function renderContrib(){
   const tb=document.querySelector('#mineTbl tbody'),th=document.querySelector('#mineTbl thead');
   if(!tb||!th)return;
   const ms=document.getElementById('mineScope');
-  if(ms)ms.textContent=`— ${scopeL} · ${basisL} 기준 · 팀 ${rank}위 / ${arr.length}명 · Buying=Selling−Margin`;
+  if(ms)ms.innerHTML=`— ${scopeL} · ${basisL} 기준 · <b>${ML} 기준 팀 ${rank}위</b> / ${arr.length}명 <span style="color:var(--gray)">(상단 지표 토글에 따라 순위가 바뀝니다)</span> · Buying=Selling−Margin`
+   +(state.year<2026?`<br><span style="color:var(--od)">※ 2023~2025는 로데이터 재집계값이라 리포트 탭의 확정 실적과 0.5~0.7% 차이가 납니다 (집계 기준 상이). 2026년은 완전 일치.</span>`:'');
   th.innerHTML='<tr><th class="l">지표</th><th>한국 전체</th><th>내 실적</th><th class="l">내 기여도</th></tr>';
   const bar=v=>`<div class="mbar"><div class="tr"><i style="width:${Math.min(v,100).toFixed(1)}%"></i></div><b>${v.toFixed(1)}%</b></div>`;
   const R=(lab,tv,mv,fmt,cls)=>`<tr class="${cls||''}"><td class="l" style="font-weight:600">${lab}</td><td>${fmt(tv)}</td><td style="font-weight:700;color:var(--od)">${fmt(mv)}</td><td class="l">${bar(pctOf(mv,tv))}</td></tr>`;
@@ -1119,13 +1165,14 @@ function renderMyHotel(base){
  document.getElementById('myKpi').innerHTML=cards.map(c=>`<div class="wkc"><div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}</div></div>`).join('');
  function full26(o){const mi=MI[state.m];let s=0;const r=o.mon.cout||{};for(const ym in r)if(ym.slice(0,4)==='2026')s+=r[ym][mi];return s;}
  const _SO=!!state.seoulOnly;   // 서울오피스 열은 필터를 켰을 때만 노출 (보유 시설이 소수라 평소엔 숨김)
- const head=['No','대지역','소지역','세부지역'].concat(_SO?['서울오피스']:[]).concat(['계약상태','분류','코드','호텔명','체인','26'+MLAB[state.m]+(state.m==='r'?'(박)':'(원)'),'마지막 미팅','마지막 통화','PIC']);
- const _LN=new Set(['대지역','소지역','세부지역','서울오피스','계약상태','분류','코드','호텔명','체인','마지막 미팅','마지막 통화','PIC']);
+ // 260825: 지역 3열 → 1열, 미팅·통화 2열 → '최종 접촉' 1열 (13열 → 10열, 가로스크롤 완화)
+ const head=['No','지역'].concat(_SO?['서울오피스']:[]).concat(['계약상태','분류','코드','호텔명','체인','26'+MLAB[state.m]+(state.m==='r'?'(박)':'(원)'),'최종 접촉','PIC']);
+ const _LN=new Set(['지역','서울오피스','계약상태','분류','코드','호텔명','체인','최종 접촉','PIC']);
  const L=new Set(head.map((h,i)=>_LN.has(h)?i:-1).filter(i=>i>=0));
  document.querySelector('#myTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${L.has(i)?'l':''}">${h}</th>`).join('')+'</tr>';
  const STC={'Active':'grow','Pending':'new','Suspended':'churn','ing':'keep'};
  const rows=base.slice().sort((a,b)=>full26(b)-full26(a));myExportRows=rows;
- document.querySelector('#myTbl tbody').innerHTML=rows.map((o,i)=>`<tr><td>${i+1}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l" style="color:#999">${o.area||''}</td>${_SO?`<td class="l">${(()=>{const k=seoulKind(o);if(!k.on)return '<span style="color:#ddd">-</span>';return '<span class="badge b-'+(k.type==='현지'?'grow':'new')+'" title="'+(k.type==='현지'?'호텔이 서울 소재':'서울 영업·예약 사무소')+' — '+k.lab+'">'+k.lab+'</span>';})()}</td>`:''}<td class="l"><span class="badge b-${STC[o.status]||'none'}">${o.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.chain}</td><td>${state.m==='r'?Math.round(full26(o)).toLocaleString():bm(full26(o))}</td><td class="l">${dcell(contactInfo(o).m,contactInfo(o).dm)}</td><td class="l">${dcell(contactInfo(o).c,contactInfo(o).dc)}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`).join('');
+ document.querySelector('#myTbl tbody').innerHTML=rows.map((o,i)=>`<tr><td>${i+1}</td><td class="l" style="white-space:nowrap">${o.city||o.region||'-'}${o.area?` <span style="color:#aaa">${o.area}</span>`:''}</td>${_SO?`<td class="l">${(()=>{const k=seoulKind(o);if(!k.on)return '<span style="color:#ddd">-</span>';return '<span class="badge b-'+(k.type==='현지'?'grow':'new')+'" title="'+(k.type==='현지'?'호텔이 서울 소재':'서울 영업·예약 사무소')+' — '+k.lab+'">'+k.lab+'</span>';})()}</td>`:''}<td class="l"><span class="badge b-${STC[o.status]||'none'}">${o.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.chain}</td><td>${state.m==='r'?Math.round(full26(o)).toLocaleString():bm(full26(o))}</td>${watchContactTd(o)}<td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`).join('');
 }
 function showNoRev(){const isNoRev=state.cats.size===2&&state.cats.has('무거래')&&state.cats.has('이탈');if(isNoRev){state.cats=new Set(CATLABEL);}else{state.cats=new Set(['무거래','이탈']);if(!state.status.has('Active')){state.status=new Set(['Active']);document.querySelectorAll('.stchk').forEach(c=>c.checked=(c.value==='Active'));syncStAll();}}state.view='main';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v==='main'));['main','myhotel','weekly','pickup','promo','contrib'].forEach(v=>document.getElementById('view'+v[0].toUpperCase()+v.slice(1)).style.display=state.view===v?'':'none');render();}
 function promoStatus(o){const t=new Date();t.setHours(0,0,0,0);
@@ -1134,20 +1181,51 @@ function promoStatus(o){const t=new Date();t.setHours(0,0,0,0);
  const ce=new Date(o.pcend);if(ce.getFullYear()>=2035)return{st:'상시',end:'상시',days:null};
  const days=Math.round((ce-t)/864e5);if(days<0)return{st:'만료',end:o.pcend,days};if(days<=45)return{st:'종료임박',end:o.pcend,days};return{st:'유지',end:o.pcend,days};}
 function renderPromo(base){
- const rows=base.map(o=>({o,...promoStatus(o)}));
+ let rows=base.map(o=>({o,...promoStatus(o)}));
  const live=rows.filter(r=>['유지','상시','종료임박'].includes(r.st)).length;
  const noP=rows.filter(r=>r.st==='영업필요').length,noPrev=rows.filter(r=>r.st==='미적용(매출有)').length,soon=rows.filter(r=>r.st==='종료임박').length,exp=rows.filter(r=>r.st==='만료').length;
  const TYPES=['기본할인','얼리버드','라스트미닛','연박','환불불가','회원'];const tc={};TYPES.forEach(t=>tc[t]=base.filter(o=>(o.ptypes||[]).includes(t)).length);
  const topType=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];const pct=v=>base.length?(v/base.length*100).toFixed(0):0;
- document.getElementById('prKpi').innerHTML=[['라이브 프로모션',live+'시설',pct(live)+'% / '+base.length],['영업필요 (매출0)',noP+'시설',pct(noP)+'%'],['미적용 (매출有)',noPrev+'시설','프로모션 도입 여지'],['종료임박 (45일내)',soon+'시설','연장 검토'],['만료 (갱신필요)',exp+'시설',''],['최다 유형',topType?topType[0]:'-',topType?topType[1]+'시설':'']].map(c=>`<div class="wkc"><div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}</div></div>`).join('');
+ // 260825: KPI 카드 클릭 → 해당 상태만 표에 표시 (다시 누르면 해제)
+ const LIVE=['유지','상시','종료임박'];
+ const KPI=[
+  ['라이브 프로모션',live+'시설',pct(live)+'% / '+base.length,LIVE],
+  ['영업필요 (매출0)',noP+'시설',pct(noP)+'%',['영업필요']],
+  ['미적용 (매출有)',noPrev+'시설','프로모션 도입 여지',['미적용(매출有)']],
+  ['종료임박 (45일내)',soon+'시설','연장 검토',['종료임박']],
+  ['만료 (갱신필요)',exp+'시설','',['만료']],
+  ['최다 유형',topType?topType[0]:'-',topType?topType[1]+'시설':'',null]];
+ const _cur=[...prHide];
+ const isOn=set=>set&&set.length&&set.every(k=>!prHide.has(k))&&ORDALL.filter(k=>!set.includes(k)).every(k=>prHide.has(k));
+ document.getElementById('prKpi').innerHTML=KPI.map((c,i)=>{
+   const on=c[3]?isOn(c[3]):false;
+   const clickable=!!c[3];
+   return `<div class="wkc${clickable?' prCard':''}${on?' on':''}"${clickable?` onclick="prPick(${i})" title="클릭하면 이 상태의 시설만 표에 표시됩니다"`:''}>`
+     +`<div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}${clickable?`<span class="prHint">${on?'해제':'보기'}</span>`:''}</div></div>`;}).join('');
+ window.__prKpiSets=KPI.map(c=>c[3]);
  const maxc=Math.max(...TYPES.map(t=>tc[t]),1);
  document.getElementById('prTypes').innerHTML=TYPES.slice().sort((a,b)=>tc[b]-tc[a]).map(t=>`<div class="mixrow"><span class="nm">${t}</span><span class="mixbar"><i style="width:${tc[t]/maxc*100}%"></i></span><span class="pc">${tc[t]}</span></div>`).join('');
+ // 260825: 상태 칩 필터 — '미세팅'(영업필요+미적용)만 보기 등
+ (function(){
+   const el=document.getElementById('prFilter');if(!el)return;
+   const cnt={};rows.forEach(r=>cnt[r.st]=(cnt[r.st]||0)+1);
+   const NOSET=['영업필요','미적용(매출有)'];
+   const noset=NOSET.reduce((a,k)=>a+(cnt[k]||0),0);
+   const CLSF={'종료임박':'new','만료':'drop','영업필요':'churn','미적용(매출有)':'keep','유지':'grow','상시':'grow'};
+   const ORD=['종료임박','만료','영업필요','미적용(매출有)','유지','상시'];
+   const chips=ORD.filter(k=>cnt[k]).map(k=>
+     `<span class="badge b-${CLSF[k]}" onclick="prTog('${k}')" style="cursor:pointer;margin-right:6px;opacity:${prHide.has(k)?0.35:1}">${k} ${cnt[k]}</span>`).join('');
+   el.innerHTML=`<span style="font-size:11px;color:var(--gray);margin-right:8px">상태 필터</span>${chips}`
+     +` <button class="miniBtn" onclick="prOnlyNoset()" title="프로모션이 걸려 있지 않은 시설만 봅니다 — 영업 대상">미세팅만 (${noset}곳)</button>`
+     +` <button class="miniBtn" onclick="prAllShow()">전체</button>`;
+ })();
+ rows=rows.filter(r=>!prHide.has(r.st));
  const rank={'종료임박':0,'만료':1,'영업필요':2,'미적용(매출有)':3,'유지':4,'상시':5};
  rows.sort((a,b)=>{const d=rank[a.st]-rank[b.st];if(d)return d;return (a.days==null?9999:a.days)-(b.days==null?9999:b.days);});
  const head=['상태','코드','호텔명','대지역','소지역','PIC','프로모션수','유형','할인율','판매','종료일','D-day','26매출'];const L=new Set([0,1,2,3,4,5,7]);
  document.querySelector('#prTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${L.has(i)?'l':''}">${h}</th>`).join('')+'</tr>';
  const CLS={'종료임박':'new','만료':'drop','영업필요':'churn','미적용(매출有)':'keep','유지':'grow','상시':'grow'};
- document.querySelector('#prTbl tbody').innerHTML=rows.map(r=>{const o=r.o;const hasPct=(o.promos||[]).some(x=>String(x[1]).includes('%'));const rs=(o.promos||[]).map(x=>parseFloat(String(x[1]).replace(/[,%]/g,''))).filter(v=>!isNaN(v));const dfmt=v=>hasPct?v+'%':Math.round(v).toLocaleString()+'원';const dr=rs.length?(Math.min(...rs)===Math.max(...rs)?dfmt(rs[0]):dfmt(Math.min(...rs))+'~'+dfmt(Math.max(...rs))):'-';const s26=Object.entries(o.mon.cout||{}).filter(e=>e[0].slice(0,4)==='2026').reduce((a,e)=>a+e[1][1],0);return `<tr><td class="l"><span class="badge b-${CLS[r.st]}">${r.st}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td><td>${(o.promos||[]).length||'-'}</td><td class="l" style="font-size:10.5px">${(o.ptypes||[]).join('·')||'-'}</td><td style="font-weight:700;color:var(--od)">${dr}</td><td>${(o.promos||[]).length?(o.popen?'<span style=\'color:#4A8C63;font-weight:700\'>오픈</span>':'<span style=\'color:#A85A5A;font-weight:700\'>미오픈</span>'):'-'}</td><td>${r.end}</td><td>${r.days==null?'-':(r.days<0?r.days+'일':'D-'+r.days)}</td><td>${bm(s26)}</td></tr>`;}).join('');
+ document.querySelector('#prTbl tbody').innerHTML=rows.map(r=>{const o=r.o;const hasPct=(o.promos||[]).some(x=>String(x[1]).includes('%'));const rs=(o.promos||[]).map(x=>parseFloat(String(x[1]).replace(/[,%]/g,''))).filter(v=>!isNaN(v));const dfmt=v=>hasPct?v+'%':Math.round(v).toLocaleString()+'원';const dr=rs.length?(Math.min(...rs)===Math.max(...rs)?dfmt(rs[0]):dfmt(Math.min(...rs))+'~'+dfmt(Math.max(...rs))):'-';const s26=Object.entries(o.mon.cout||{}).filter(e=>e[0].slice(0,4)==='2026').reduce((a,e)=>a+e[1][1],0);return `<tr><td class="l"><span class="badge b-${CLS[r.st]}">${r.st}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}</td><td class="l">${o.region}</td><td class="l">${o.city}</td><td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td><td>${(o.promos||[]).length||'-'}</td><td class="l" style="font-size:10.5px">${(o.ptypes||[]).join('·')||'-'}</td><td style="font-weight:700;color:var(--od)">${dr}</td><td>${(o.promos||[]).length?(o.popen?'<span style=\'color:#4A8C63;font-weight:700\'>오픈</span>':'<span style=\'color:#A85A5A;font-weight:700\'>미오픈</span>'):'-'}</td><td>${r.end}</td><td>${r.days==null?'-':(r.days<0?r.days+'일':'D-'+r.days)}</td><td>${bm(s26)}</td></tr>`;}).join('')||`<tr><td colspan="13" style="color:#bbb;padding:16px;text-align:center">해당 상태의 시설이 없습니다 — 위 카드나 상태 칩을 다시 눌러 전체를 보세요</td></tr>`;
 }
 document.querySelectorAll('.dimm').forEach(b=>b.onclick=()=>{document.querySelectorAll('.dimm').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.dimMode=b.dataset.m;render();});
 document.querySelectorAll('.ctdim').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ctdim').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.ctdim=b.dataset.d;render();});
