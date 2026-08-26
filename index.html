@@ -71,7 +71,8 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 .mixrow .nm{width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mixbar{flex:1;background:#EFEBE6;border-radius:6px;height:14px;overflow:hidden}
 .mixbar i{display:block;height:100%;background:var(--o);border-radius:6px}
-.mixrow .pc{width:42px;text-align:right;color:var(--gray)}
+.mixrow .pc{width:42px;text-align:right;color:var(--gray);white-space:nowrap}
+.mixrow .tSlot{width:34px;flex:0 0 34px;text-align:right;white-space:nowrap}
 .mixr{margin-bottom:9px}
 .mixr-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:4px;gap:8px}
 .mixr-nm{color:var(--dk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
@@ -114,7 +115,8 @@ th.meCol{background:var(--od)}
 .mixrow.tRow:hover{background:var(--oll)}
 .mixrow.tRow.on{background:var(--oll);box-shadow:inset 0 0 0 1px var(--od)}
 .mixrow.tRow.on .nm{font-weight:700;color:var(--od)}
-.tOn{background:var(--od);color:#fff;border-radius:7px;padding:0 5px;font-size:9.5px;margin-left:4px}
+.tOn{display:inline-block;background:var(--od);color:#fff;border-radius:7px;padding:1px 6px;font-size:9.5px;font-weight:700;line-height:1.4;white-space:nowrap}
+.sumSeg{display:inline-flex}
 .qbar{display:flex;height:26px;border-radius:7px;overflow:hidden;border:1px solid var(--ol)}
 .qbar i{display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;color:#fff;min-width:0;transition:filter .12s}
 .qbar i:hover{filter:brightness(1.08)}
@@ -188,7 +190,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 09:23 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 09:49 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -224,7 +226,7 @@ th.meCol{background:var(--od)}
 <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px">
  <label style="font-size:11px;color:var(--gray)">비교연도</label><select id="cmpYear" style="font-size:11px;padding:3px 6px;border:1px solid #E2DCD5;border-radius:6px"></select>
  <span id="repMeta" style="font-weight:400;color:var(--gray);font-size:11px"></span></div>
-<div class="card"><h3 id="sumH"><svg class="ic"><use href="#i-clipboard"/></svg> 월·분기·연간 실적<button class="miniBtn" onclick="exportTable('sumTbl','월분기연간실적')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button></h3><div id="perfCmp" style="margin-bottom:8px"></div><div id="qShare" style="margin-bottom:10px"></div><div class="tbl-wrap" style="max-height:none"><table id="sumTbl"><thead></thead><tbody></tbody></table></div></div>
+<div class="card"><h3 id="sumH"><svg class="ic"><use href="#i-clipboard"/></svg> 월·분기·연간 실적<button class="miniBtn" onclick="exportTable('sumTbl','월분기연간실적')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button></h3><div id="sumSeg" style="margin-bottom:9px"></div><div id="perfCmp" style="margin-bottom:8px"></div><div id="qShare" style="margin-bottom:10px"></div><div class="tbl-wrap" style="max-height:none"><table id="sumTbl"><thead></thead><tbody></tbody></table></div></div>
 <div id="curMon"></div>
 <div class="wkkpi" id="wkKpi"></div>
 <div class="card ins"><h3><svg class="ic"><use href="#i-bulb"/></svg> 지역별 인사이트 <span style="font-weight:400;color:var(--gray);font-size:11px" id="repRgSub">— 제주시·서귀포시·서울·기타</span></h3><div id="repRg"></div></div>
@@ -298,7 +300,7 @@ const MKTNOTE='제주 호텔 검색 지속 강세 · 중국·대만 검색 증�
 const RGS=['제주시','서귀포시','서울','기타지역'];
 const YEARS=[2023,2024,2025,2026,2027];
 const SORD={'Active':0,'Pending':1,'Suspended':2,'ing':3};const STATUSES=[...new Set(DATA.map(d=>d.status||'(미지정)'))].sort((a,b)=>(SORD[a]!==undefined?SORD[a]:9)-(SORD[b]!==undefined?SORD[b]:9));
-const state={m:'r',b:'cout',year:2026,month:'all',region:'',city:'',pic:'',chain:'',search:'',status:new Set(['Active']),cats:new Set(CATLABEL),view:'weekly',cum:false,cmpYear:2025,perfM:'sell',period:'w',seoulOnly:false,staleOnly:false};
+const state={m:'r',b:'cout',year:2026,month:'all',region:'',city:'',pic:'',chain:'',search:'',status:new Set(['Active']),cats:new Set(CATLABEL),view:'weekly',cum:false,cmpYear:2025,sumView:'me',perfM:'sell',period:'w',seoulOnly:false,staleOnly:false};
 const won=v=>Math.round(v).toLocaleString();
 function fmtDisc(v){if(v==null||v==='')return '';let str=String(v).trim();const pct=str.includes('%');const n=parseFloat(str.replace(/[,%\s]/g,''));if(isNaN(n))return str;const num=(Number.isInteger(n)?n:Math.round(n*100)/100).toLocaleString();return pct?num+'%':num+'원';}
 const eok=v=>(v/1e8).toFixed(1);
@@ -696,36 +698,55 @@ function renderWatch(base){
 }
 function renderSummary(base){
  const y=state.year;const wonN=v=>Math.round(v).toLocaleString();
- function mo(m,idx){let s=0;const ms=new Set([m]);base.forEach(o=>{s+=sumMetric(o,y,ms,idx);});return s;}
- // 1차: 월·분기·연간 집계 (비중 계산을 위해 먼저 합계를 구함)
- const M=[];const qs=[[0,0,0],[0,0,0],[0,0,0],[0,0,0]];const gt=[0,0,0];
- for(let m=1;m<=12;m++){const rn=mo(m,0),sell=mo(m,1),mg=mo(m,2);M.push([rn,sell,mg]);
-   const q=Math.floor((m-1)/3);qs[q][0]+=rn;qs[q][1]+=sell;qs[q][2]+=mg;gt[0]+=rn;gt[1]+=sell;gt[2]+=mg;}
- // 당월 (선택 연도가 올해일 때만)
+ const VIEW=state.sumView||'me';
+ // 관점 토글
+ (function(){const el=document.getElementById('sumSeg');if(!el)return;
+  const T=[['me','내 담당','상단 필터가 적용된 내 시설 실적'],['kr','한국 전체','로데이터의 국내 전 시설 (필터 무관)'],['share','내 기여도','내 실적 ÷ 한국 전체 (필터 무관·전사 기준)']];
+  el.innerHTML=`<div class="seg sm sumSeg">${T.map(t=>`<button data-v="${t[0]}" class="${VIEW===t[0]?'on':''}" title="${t[2]}">${t[1]}</button>`).join('')}</div>`;
+  el.querySelectorAll('button').forEach(b=>b.onclick=()=>{state.sumView=b.dataset.v;render();});})();
+ // 데이터 소스
+ function moME(m,idx){let s=0;const ms=new Set([m]);base.forEach(o=>{s+=sumMetric(o,y,ms,idx);});return s;}
+ function krPick(pics,m,idx){let s=0;const k=''+y+String(m).padStart(2,'0');
+  pics.forEach(g=>{const d=(KR[g]||{})[state.b]||{};if(d[k])s+=d[k][idx];});return s;}
+ const ALLP=Object.keys(KR);
+ const src=(m,idx)=>VIEW==='me'?moME(m,idx):krPick(ALLP,m,idx);
+ const srcMe=(m,idx)=>VIEW==='share'?krPick(['ME'],m,idx):src(m,idx);
+ // 집계
+ const M=[],Mme=[];const qs=[[0,0,0],[0,0,0],[0,0,0],[0,0,0]],qm=[[0,0,0],[0,0,0],[0,0,0],[0,0,0]];const gt=[0,0,0],gm=[0,0,0];
+ for(let m=1;m<=12;m++){const v=[src(m,0),src(m,1),src(m,2)];const w=[srcMe(m,0),srcMe(m,1),srcMe(m,2)];
+   M.push(v);Mme.push(w);const q=Math.floor((m-1)/3);
+   for(let i=0;i<3;i++){qs[q][i]+=v[i];gt[i]+=v[i];qm[q][i]+=w[i];gm[i]+=w[i];}}
  const _nd=new Date();const curM=(y===_nd.getFullYear())?(_nd.getMonth()+1):(state.month!=='all'?+state.month:0);
- const head=[y+' 실적','Selling Rate','Buying Rate','Margin','Profit %','ADR','Room Night'];
- document.querySelector('#sumTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${i===0?'l':''}">${h}</th>`).join('')+'</tr>';
+ const HEAD={me:[y+' 내 담당','Selling Rate','Buying Rate','Margin','Profit %','ADR','Room Night'],
+             kr:[y+' 한국 전체','Selling Rate','Buying Rate','Margin','Profit %','ADR','Room Night'],
+             share:[y+' 기여도','Selling 비중','Buying 비중','Margin 비중','Profit% 차이','ADR 차이','RN 비중']}[VIEW];
+ document.querySelector('#sumTbl thead').innerHTML='<tr>'+HEAD.map((h,i)=>`<th class="${i===0?'l':''}">${h}</th>`).join('')+'</tr>';
  const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
- const row=(lab,rn,sell,mg,cls,share)=>{const buy=sell-mg,adr=rn?buy/rn:0,pf=buy?mg/buy*100:0;
-   return `<tr class="${cls||''}"><td class="l">${lab}${share!=null?` <span class="qsh">${share.toFixed(1)}%</span>`:''}</td><td>${bm(sell)}</td><td>${bm(buy)}</td><td>${bm(mg)}</td><td>${pf.toFixed(2)}%</td><td>${wonN(adr)}</td><td>${wonN(rn)}</td></tr>`;};
- const MI2={r:0,s:1,m:2}[state.m];            // 비중 기준 = 상단 지표 토글
- const tot=gt[MI2]||1;
+ const pf=(rn,sell,mg)=>{const buy=sell-mg;return{buy:buy,adr:rn?buy/rn:0,p:buy?mg/buy*100:0};};
+ const row=(lab,v,w,cls,share)=>{
+   if(VIEW!=='share'){const a=pf(v[0],v[1],v[2]);
+     return `<tr class="${cls||''}"><td class="l">${lab}${share!=null?` <span class="qsh">${share.toFixed(1)}%</span>`:''}</td><td>${bm(v[1])}</td><td>${bm(a.buy)}</td><td>${bm(v[2])}</td><td>${a.p.toFixed(2)}%</td><td>${wonN(a.adr)}</td><td>${wonN(v[0])}</td></tr>`;}
+   const A=pf(v[0],v[1],v[2]),B=pf(w[0],w[1],w[2]);
+   const pc=(a,b)=>b>0?`<b style="color:var(--od)">${(a/b*100).toFixed(1)}%</b>`:'<span style="color:#ccc">·</span>';
+   const dp=(a,b)=>(b>0&&a>0)?`<span class="${a>=b?'pos':'neg'}">${a>=b?'+':''}${(a-b).toFixed(2)}p</span>`:'<span style="color:#ccc">·</span>';
+   const dr=(a,b)=>(b>0&&a>0)?`<span class="${a>=b?'pos':'neg'}">${a>=b?'+':''}${((a-b)/b*100).toFixed(1)}%</span>`:'<span style="color:#ccc">·</span>';
+   return `<tr class="${cls||''}"><td class="l">${lab}</td><td>${pc(w[1],v[1])}</td><td>${pc(B.buy,A.buy)}</td><td>${pc(w[2],v[2])}</td><td>${dp(B.p,A.p)}</td><td>${dr(B.adr,A.adr)}</td><td>${pc(w[0],v[0])}</td></tr>`;};
+ const MI2={r:0,s:1,m:2}[state.m];const tot=gt[MI2]||1;
  let body='';
- for(let m=1;m<=12;m++){
-   const v=M[m-1];const q=Math.floor((m-1)/3);
-   const isCur=(m===curM);
-   body+=row(MN[m-1]+(isCur?' <span class="curBadge">당월</span>':''),v[0],v[1],v[2],isCur?'curM':'');
-   if(m%3===0)body+=row('Quarter '+(q+1),qs[q][0],qs[q][1],qs[q][2],'qr',qs[q][MI2]/tot*100);
- }
- body+=row('Grand Total',gt[0],gt[1],gt[2],'gt');
+ for(let m=1;m<=12;m++){const q=Math.floor((m-1)/3);const isCur=(m===curM);
+   body+=row(MN[m-1]+(isCur?' <span class="curBadge">당월</span>':''),M[m-1],Mme[m-1],isCur?'curM':'');
+   if(m%3===0)body+=row('Quarter '+(q+1),qs[q],qm[q],'qr',VIEW==='share'?null:qs[q][MI2]/tot*100);}
+ body+=row('Grand Total',gt,gm,'gt');
  document.querySelector('#sumTbl tbody').innerHTML=body;
- // 분기 비중 스택바
  const qb=document.getElementById('qShare');
  if(qb){const QC=['#A8705A','#C09079','#D8B3A2','#EFD9CE'];
-   const seg=qs.map((q,i)=>({i:i+1,v:q[MI2],p:q[MI2]/tot*100})).filter(x=>x.v>0);
+   const base4=VIEW==='share'?qm:qs;const t4=(VIEW==='share'?gm:gt)[MI2]||1;
+   const seg=base4.map((q,i)=>({i:i+1,v:q[MI2],p:q[MI2]/t4*100})).filter(x=>x.v>0);
    qb.innerHTML=seg.length?`<div class="qbar">${seg.map(x=>`<i style="width:${x.p}%;background:${QC[x.i-1]}" title="Q${x.i} ${x.p.toFixed(1)}%"><b>Q${x.i}</b><span>${x.p.toFixed(1)}%</span></i>`).join('')}</div>`
      +`<div class="qlg">${seg.map(x=>`<span><i style="background:${QC[x.i-1]}"></i>Q${x.i} ${state.m==='r'?wonN(x.v)+'박':bm(x.v)+'원'} <b>${x.p.toFixed(1)}%</b></span>`).join('')}</div>`:'';}
- document.getElementById('sumH').innerHTML=`<svg class="ic"><use href="#i-clipboard"/></svg> 월·분기·연간 실적<button class="miniBtn" onclick="exportTable('sumTbl','월분기연간실적')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— ${y} · ${({cout:'체크아웃',cin:'체크인',book:'부킹'})[state.b]} · MoM · QoQ · Yearly · 분기 비중은 ${MLAB[state.m]} 기준 · ADR=Buying÷RN · Profit%=Margin÷Buying</span>`;
+ const NOTE={me:'상단 필터 적용 · 내 담당 시설',kr:'로데이터 국내 전 시설 · <b>상단 필터와 무관</b>',
+             share:'내 실적 ÷ 한국 전체 · <b>상단 필터와 무관한 전사 기준</b> · 비율 열은 차이(p·%)'}[VIEW];
+ document.getElementById('sumH').innerHTML=`<svg class="ic"><use href="#i-clipboard"/></svg> 월·분기·연간 실적<button class="miniBtn" onclick="exportTable('sumTbl','월분기연간실적')" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— ${y} · ${({cout:'체크아웃',cin:'체크인',book:'부킹'})[state.b]} · MoM · QoQ · Yearly · ${NOTE}</span>`;
 }
 let perfCharts=[];
 function renderReport(base){
@@ -1258,7 +1279,7 @@ function renderPromo(base){
  const maxc=Math.max(...TYPES.map(t=>tc[t]),1);
  document.getElementById('prTypes').innerHTML=TYPES.slice().sort((a,b)=>tc[b]-tc[a]).map(t=>{
    const on=prType===t;
-   return `<div class="mixrow tRow${on?' on':''}" onclick="prTypePick('${t}')" title="클릭하면 이 유형이 적용된 시설만 표에 표시됩니다"><span class="nm">${t}</span><span class="mixbar"><i style="width:${tc[t]/maxc*100}%"></i></span><span class="pc">${tc[t]}${on?' <b class="tOn">해제</b>':''}</span></div>`;}).join('')
+   return `<div class="mixrow tRow${on?' on':''}" onclick="prTypePick('${t}')" title="클릭하면 이 유형이 적용된 시설만 표에 표시됩니다"><span class="nm">${t}</span><span class="mixbar"><i style="width:${tc[t]/maxc*100}%"></i></span><span class="pc">${tc[t]}</span><span class="tSlot">${on?'<b class="tOn">해제</b>':''}</span></div>`;}).join('')
    +`<div style="font-size:10.5px;color:var(--gray);margin-top:8px">막대를 클릭하면 해당 유형이 적용된 시설만 아래 표에 표시됩니다${prType?` · 현재 <b style="color:var(--od)">${prType}</b> 적용 중`:''}</div>`;
  // 260825: 상태 칩 필터 — '미세팅'(영업필요+미적용)만 보기 등
  (function(){
