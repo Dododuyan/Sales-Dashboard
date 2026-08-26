@@ -217,7 +217,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 16:53 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 17:00 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -288,6 +288,7 @@ th.meCol{background:var(--od)}
 </div>
 <div id="viewMyhotel" style="display:none">
 <div class="wkkpi" id="myKpi"></div>
+<div id="myPickScope" style="margin:6px 0 2px"></div>
 <div class="card"><h3><svg class="ic"><use href="#i-hotel"/></svg> My Hotel — 담당 시설 관리대장<button class="miniBtn" id="btnStale" onclick="toggleStale()" style="margin-left:8px;vertical-align:middle" title="마지막 미팅·통화가 50일을 넘었거나 기록이 없는 시설만 봅니다"><svg class="ic"><use href="#i-clock"/></svg> 50일+ 미접촉</button><button class="miniBtn" id="btnSeoul" onclick="toggleSeoul()" style="margin-left:8px;vertical-align:middle" title="호텔 소재지는 지방인데 서울에 영업·예약 사무소가 있는 시설만 봅니다"><svg class="ic"><use href="#i-building"/></svg> 서울오피스</button><button class="miniBtn" onclick="exportMyHotel()" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> 관리대장 CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 행 클릭 시 히스토리 카드 · 필터 연동 · 기준파일 김도도(NEW)</span></h3>
 <div class="tbl-wrap" style="max-height:640px"><table id="myTbl" class="sortable"><thead></thead><tbody></tbody></table></div></div>
 </div>
@@ -346,7 +347,7 @@ const cityKo=c=>CITYKO[c]||c||'';
 const cityRank=c=>{const i=CITYORD.indexOf(c);return i<0?999:i;};
 const YEARS=[2023,2024,2025,2026,2027];
 const SORD={'Active':0,'Pending':1,'Suspended':2,'ing':3};const STATUSES=[...new Set(DATA.map(d=>d.status||'(미지정)'))].sort((a,b)=>(SORD[a]!==undefined?SORD[a]:9)-(SORD[b]!==undefined?SORD[b]:9));
-const state={m:'r',b:'cout',year:2026,month:'all',region:'',city:'',pic:'',chain:'',search:'',status:new Set(['Active']),cats:new Set(CATLABEL),view:'weekly',cum:false,cmpYear:2025,sumView:'me',regLvl:'city',tpYear:'',tpOpen:false,perfM:'sell',period:'w',seoulOnly:false,staleOnly:false};
+const state={m:'r',b:'cout',year:2026,month:'all',region:'',city:'',pic:'',chain:'',search:'',status:new Set(['Active']),cats:new Set(CATLABEL),view:'weekly',cum:false,cmpYear:2025,sumView:'me',regLvl:'city',tpYear:'',tpOpen:false,myPick:'',perfM:'sell',period:'w',seoulOnly:false,staleOnly:false};
 const won=v=>Math.round(v).toLocaleString();
 function fmtDisc(v){if(v==null||v==='')return '';let str=String(v).trim();const pct=str.includes('%');const n=parseFloat(str.replace(/[,%\s]/g,''));if(isNaN(n))return str;const num=(Number.isInteger(n)?n:Math.round(n*100)/100).toLocaleString();return pct?num+'%':num+'원';}
 const eok=v=>(v/1e8).toFixed(1);
@@ -1396,6 +1397,19 @@ function seoulKind(o){
  if(v)return{on:1,type:'사무소',lab:v==='O'?'O':v};
  return{on:0,type:'',lab:''};}
 function hasSeoulOffice(o){return seoulKind(o).on===1;}
+// My Hotel KPI 카드 클릭 필터 (260826)
+//   카드를 누르면 해당 조건의 시설만 표에 남습니다. 같은 카드를 다시 누르면 해제.
+const MYSETS={
+ all:   {lab:'전체',       f:null},
+ act:   {lab:'운영 Active', f:o=>(o.status||'')==='Active'},
+ live:  {lab:'활성(예약발생)',f:(o,v)=>(o.status||'')==='Active'&&!o.linkTo&&v>0},
+ idle:  {lab:'Active 무실적',f:(o,v)=>(o.status||'')==='Active'&&!o.linkTo&&!(v>0)},
+ pend:  {lab:'대기 Pending', f:o=>(o.status||'')==='Pending'},
+ susp:  {lab:'중단 Suspended',f:o=>(o.status||'')==='Suspended'},
+ seoul: {lab:'서울에서 만남 가능',f:o=>hasSeoulOffice(o)},
+ stale: {lab:'50일+ 미접촉', f:o=>contactInfo(o).stale}
+};
+function myPick(k){ state.myPick=(state.myPick===k?'':k); render(); }
 function renderMyHotel(base){
  const all=base;
  const stN=all.filter(o=>contactInfo(o).stale).length;
@@ -1415,15 +1429,28 @@ function renderMyHotel(base){
  // 활성율 = Active 시설 중 선택 연도에 실적이 발생한 시설 비중
  const _actAll=base.filter(o=>(o.status||'')==='Active'&&!o.linkTo);
  const _actLive=_actAll.filter(o=>full26(o)>0).length;
+ const _scopeL=state.year+(state.month==='all'?' 전체월':'.'+state.month+'월');
  const tt=realN||1;const pv=v=>Math.round(v/tt*100)+'%';const cards=[
-  ['총 담당',realN+'시설',_oldN?('구코드 '+_oldN+'곳 제외'):'100%'],
-  ['운영 Active',byst('Active')+'시설',pv(byst('Active'))],
-  ['활성율 (예약발생)',_actLive+'시설','Active '+_actAll.length+'곳 중 '+(_actAll.length?Math.round(_actLive/_actAll.length*100):0)+'%'],['대기 Pending',byst('Pending')+'시설',pv(byst('Pending'))],['중단 Suspended',byst('Suspended')+'시설',pv(byst('Suspended'))],['서울에서 만남 가능',sN+'시설','서울소재 '+sLocal+' + 사무소 '+sOff],['50일+ 미접촉',stN+'시설',Math.round(stN/(all.length||1)*100)+'% / 전체']];
- document.getElementById('myKpi').innerHTML=cards.map(c=>`<div class="wkc"><div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}</div></div>`).join('');
- function full26(o){const mi=MI[state.m];let s=0;const r=o.mon.cout||{};for(const ym in r)if(ym.slice(0,4)==='2026')s+=r[ym][mi];return s;}
+  ['총 담당',realN+'시설',_oldN?('구코드 '+_oldN+'곳 제외'):'100%','all'],
+  ['운영 Active',byst('Active')+'시설',pv(byst('Active')),'act'],
+  ['활성율 (예약발생)',_actLive+'시설','Active '+_actAll.length+'곳 중 '+(_actAll.length?Math.round(_actLive/_actAll.length*100):0)+'%','live'],
+  ['Active 무실적',(_actAll.length-_actLive)+'시설',_scopeL+' 실적 없음','idle'],['대기 Pending',byst('Pending')+'시설',pv(byst('Pending')),'pend'],['중단 Suspended',byst('Suspended')+'시설',pv(byst('Suspended')),'susp'],['서울에서 만남 가능',sN+'시설','서울소재 '+sLocal+' + 사무소 '+sOff,'seoul'],['50일+ 미접촉',stN+'시설',Math.round(stN/(all.length||1)*100)+'% / 전체','stale']];
+ document.getElementById('myKpi').innerHTML=cards.map(c=>{
+   const k=c[3],on=k&&state.myPick===k,click=!!k;
+   return `<div class="wkc${click?' prCard':''}${on?' on':''}"${click?` onclick="myPick('${k}')" title="클릭하면 이 조건의 시설만 표에 표시됩니다"`:''}>`
+     +`<div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}${click?`<span class="prHint">${on?'해제':'보기'}</span>`:''}</div></div>`;}).join('');
+ // 선택된 카드 조건으로 표를 좁힙니다
+ const _mp=MYSETS[state.myPick];
+ if(_mp&&_mp.f)base=base.filter(o=>_mp.f(o,full26(o)));
+ const _mps=document.getElementById('myPickScope');
+ if(_mps)_mps.innerHTML=(_mp&&_mp.f)?`<span class="cpill">${_mp.lab} <b>${base.length}</b>곳만 표시</span> <button class="miniBtn" onclick="myPick('${state.myPick}')">해제</button>`:'';
+ // 상단 연도·월 토글을 그대로 따릅니다 (종전에는 2026 전체월 고정이었습니다) 260826
+ function full26(o){const mi=MI[state.m];let s=0;const r=o.mon.cout||{};const Y=String(state.year);
+   const MM=state.month==='all'?null:String(state.month).padStart(2,'0');
+   for(const ym in r){if(ym.slice(0,4)!==Y)continue;if(MM&&ym.slice(4)!==MM)continue;s+=r[ym][mi];}return s;}
  const _SO=!!state.seoulOnly;   // 서울오피스 열은 필터를 켰을 때만 노출 (보유 시설이 소수라 평소엔 숨김)
  // 260825: 지역 3열 → 1열, 미팅·통화 2열 → '최종 접촉' 1열 (13열 → 10열, 가로스크롤 완화)
- const head=['No','지역'].concat(_SO?['서울오피스']:[]).concat(['계약상태','분류','코드','호텔명','체인','26'+MLAB[state.m]+(state.m==='r'?'(박)':'(원)'),'최종 접촉','PIC']);
+ const head=['No','지역'].concat(_SO?['서울오피스']:[]).concat(['계약상태','분류','코드','호텔명','체인',(String(state.year).slice(2)+'년 '+(state.month==='all'?'':state.month+'월 '))+MLAB[state.m]+(state.m==='r'?'(박)':'(원)'),'최종 접촉','PIC']);
  const _LN=new Set(['지역','서울오피스','계약상태','분류','코드','호텔명','체인','최종 접촉','PIC']);
  const L=new Set(head.map((h,i)=>_LN.has(h)?i:-1).filter(i=>i>=0));
  document.querySelector('#myTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${L.has(i)?'l':''}">${h}</th>`).join('')+'</tr>';
