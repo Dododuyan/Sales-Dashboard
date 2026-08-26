@@ -15,6 +15,10 @@ header .sub{font-size:12px;opacity:.92;margin-top:5px}
 .note{background:var(--oll);border:1px solid var(--ol);color:var(--od);border-radius:10px;padding:8px 12px;font-size:11px;margin-top:10px}
 .bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:12px 0 4px}
 .bar label{font-size:11px;color:var(--gray);margin:0 2px 0 6px}
+#contribBanner summary{list-style:none;user-select:none}
+#contribBanner summary::-webkit-details-marker{display:none}
+#contribBanner summary:before{content:'\25B8\00a0';font-size:9px}
+#contribBanner details[open] summary:before{content:'\25BE\00a0'}
 .bar .fg{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
 .bar .fg label{margin:0 2px 0 0}
 select,input[type=search]{font-family:inherit;font-size:12px;padding:6px 8px;border:1px solid #E2DCD5;border-radius:8px;background:#fff;color:var(--dk)}
@@ -213,7 +217,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 15:57 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 16:38 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -224,7 +228,7 @@ th.meCol{background:var(--od)}
 <span class="fg"><label>소지역</label><select id="fCity"><option value="">전체</option></select></span>
 <span class="fg"><label>PIC</label><select id="fPic"><option value="">전체</option></select></span>
 <span class="fg"><label>체인</label><select id="fChain"><option value="">전체</option></select></span>
-<span class="fg"><label>계약형태</label><select id="fCtype"><option value="">전체</option></select></span>
+<span class="fgbr" style="flex-basis:100%;height:0"></span><span class="fg"><label>계약형태</label><select id="fCtype"><option value="">전체</option></select></span>
 <span class="fg"><label>CMS</label><select id="fCms" title="CMS는 시설 필터로만 동작합니다 (복수 운영 1곳뿐이라 실적 분리 불필요)"><option value="">전체</option></select></span><span id="dimModeBox" style="display:none;margin-left:4px"><button class="miniBtn dimm on" data-m="slice" title="선택한 유형의 예약 실적만 집계합니다">해당 유형 실적만</button><button class="miniBtn dimm" data-m="fac" title="해당 유형을 운영하는 시설의 전체 실적을 봅니다">시설 전체</button></span>
 <input type="search" id="fSearch" placeholder="호텔명·코드 검색"><span id="perfCardBtn" style="display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center;margin-left:6px"></span>
 </div>
@@ -726,7 +730,7 @@ function renderWatch(base){
    if(ps.st==='만료'){R.push(['프로모션 만료','drop','프로모션 만료']);cnts['프로모션 만료']++;}
    if(ps.st==='종료임박'){R.push([`프로모션 D-${ps.days}`,'new','종료임박']);cnts['종료임박']++;}
    if(cr>=0.4&&(n+cc)>=10){R.push([`고취소 ${Math.round(cr*100)}%`,'churn','고취소']);cnts['고취소']++;}
-   if(sR===0&&(!o.promos||!o.promos.length)){R.push(['영업필요(월매출0)','keep','영업필요']);cnts['영업필요']++;}
+   if(sR===0&&(!o.promos||!o.promos.length)){R.push(['영업필요(월매출無)','keep','영업필요']);cnts['영업필요']++;}
    if(R.length)items.push({o,R,cr,ps,rn:rv[0],sell:rv[1],mg:rv[2],pv:prevVals(o),loss:Math.max(0,prev-cur)});
  });
  const score=it=>{let s=0;it.R.forEach(r=>{const t=r[0];if(t.startsWith('이탈'))s+=100;else if(t.startsWith('급락'))s+=80;else if(t.includes('만료'))s+=60;else if(t.includes('D-'))s+=40;else if(t.startsWith('고취소'))s+=30;else s+=10;});return s;};
@@ -1111,7 +1115,7 @@ function renderContrib(){
  const rank=arr.findIndex(a=>a.pic==='ME')+1;
  const adrMe=me.rn?me.sell/me.rn:0,adrT=T.rn?T.sell/T.rn:0;
  const bn=document.getElementById('contribBanner');
- if(bn)bn.innerHTML='<div style="background:var(--oll);border:1px solid var(--ol);border-radius:8px;padding:8px 12px;font-size:11.5px;color:#7A6357;margin-bottom:12px"><svg class="ic"><use href="#i-globe"/></svg> <b>'+krScopeLabel()+' 기준</b>'+(geoOn?' <b style=\'color:var(--od)\'>· 지역 필터 적용 중</b>':'')+'<div style="margin-top:5px;line-height:1.8"><b style=\'color:var(--od)\'>전사 기여도</b> = '+(geoOn?'내 '+krScopeLabel()+' 실적':'내 실적')+' &divide; <b>한국 전체</b>'+(geoOn?'&nbsp; ·&nbsp; <b>'+krScopeLabel()+' 내</b> = 내 실적 &divide; '+krScopeLabel()+' 전체':'')+'<br>로데이터의 국내 전 시설 집계 · PIC 구분은 팀 인벤토리(KR_SCM_PIC) 매핑<br><b>대지역·소지역 필터만 반영</b> (담당자·계약상태 등 나머지 필터는 무관) · <b>Buying = Selling &minus; Margin</b>(호텔 입금가)<br><span style=\'color:var(--od)\'>&#8251; <b>Third Party</b> = Contract Type&middot;CMS/PMS 가 둘 다 공란이면서 <b>매입처가 외부 공급사</b>(Agoda 3rd party&middot;Hotelbeds&middot;DOTW&middot;EAN&middot;Dida&middot;FITRuums 등)인 예약. 담당자와 무관하게 별도 분류하며 리포트 탭도 같은 기준입니다.</span></div></div>';
+ if(bn)bn.innerHTML='<div style="background:var(--oll);border:1px solid var(--ol);border-radius:8px;padding:8px 12px;font-size:11.5px;color:#7A6357;margin-bottom:12px"><svg class="ic"><use href="#i-globe"/></svg> <b>'+krScopeLabel()+' 기준</b>'+(geoOn?' <b style=\'color:var(--od)\'>· 지역 필터 적용 중</b>':'')+'<details style="margin-top:4px"><summary style="cursor:pointer;color:var(--od);font-weight:700;font-size:11px">집계 기준 &middot; 용어 안내</summary><div style="margin-top:6px;line-height:1.8"><b style=\'color:var(--od)\'>전사 기여도</b> = '+(geoOn?'내 '+krScopeLabel()+' 실적':'내 실적')+' &divide; <b>한국 전체</b>'+(geoOn?'&nbsp; ·&nbsp; <b>'+krScopeLabel()+' 내</b> = 내 실적 &divide; '+krScopeLabel()+' 전체':'')+'<br>로데이터의 국내 전 시설 집계 · PIC 구분은 팀 인벤토리(KR_SCM_PIC) 매핑<br><b>대지역·소지역 필터만 반영</b> (담당자·계약상태 등 나머지 필터는 무관) · <b>Buying = Selling &minus; Margin</b>(호텔 입금가)<br><span style=\'color:var(--od)\'>&#8251; <b>Third Party</b> = Contract Type&middot;CMS/PMS 가 둘 다 공란이면서 <b>매입처가 외부 공급사</b>(Agoda 3rd party&middot;Hotelbeds&middot;DOTW&middot;EAN&middot;Dida&middot;FITRuums 등)인 예약. 담당자와 무관하게 별도 분류하며 리포트 탭도 같은 기준입니다.</span></div></details></div>';
  // Buying = Selling − Margin (월·분기·연간 실적 표와 동일 정의)
  T.buy=T.sell-T.mg; me.buy=(me.sell||0)-(me.mg||0);
  const pctOf=(a,b)=>b>0?a/b*100:0;
@@ -1435,18 +1439,16 @@ function renderPromo(base){
  const pmVal=o=>sumScope(o,state.year,_pmSet);
  const pmLab=refM+'월 '+MLAB[state.m]+(state.m==='r'?'(박)':'(원)');
  const live=rows.filter(r=>['유지','상시','종료임박'].includes(r.st)).length;
- const noP=rows.filter(r=>r.st==='영업필요').length,noPrev=rows.filter(r=>r.st==='미적용(매출有)').length,soon=rows.filter(r=>r.st==='종료임박').length,exp=rows.filter(r=>r.st==='만료').length;
+ const noP=rows.filter(r=>r.st==='영업필요').length,noPrev=rows.filter(r=>r.st==='미적용(매출有)').length,soon=rows.filter(r=>r.st==='종료임박').length;   // 만료 카드 제거 — 만료되면 프로모션 목록에서 빠져 항상 0 (260826)
  const TYPES=['기본할인','얼리버드','라스트미닛','연박','환불불가','회원'];const tc={};TYPES.forEach(t=>tc[t]=base.filter(o=>(o.ptypes||[]).includes(t)).length);
- const topType=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];const pct=v=>base.length?(v/base.length*100).toFixed(0):0;
+ const pct=v=>base.length?(v/base.length*100).toFixed(0):0;   // 최다유형 카드는 제거(하단 '유형 분포'와 중복) 260826
  // 260825: KPI 카드 클릭 → 해당 상태만 표에 표시 (다시 누르면 해제)
  const LIVE=['유지','상시','종료임박'];
  const KPI=[
   ['라이브 프로모션',live+'시설',pct(live)+'% / '+base.length,LIVE],
-  ['영업필요 (매출0)',noP+'시설',pct(noP)+'%',['영업필요']],
+  ['영업필요 (매출無)',noP+'시설',pct(noP)+'%',['영업필요']],
   ['미적용 (매출有)',noPrev+'시설','프로모션 도입 여지',['미적용(매출有)']],
-  ['종료임박 (45일내)',soon+'시설','연장 검토',['종료임박']],
-  ['만료 (갱신필요)',exp+'시설','',['만료']],
-  ['최다 유형',topType?topType[0]:'-',topType?topType[1]+'시설':'',null]];
+  ['종료임박 (45일내)',soon+'시설','연장 검토',['종료임박']]];
  const _cur=[...prHide];
  const isOn=set=>set&&set.length&&set.every(k=>!prHide.has(k))&&ORDALL.filter(k=>!set.includes(k)).every(k=>prHide.has(k));
  document.getElementById('prKpi').innerHTML=KPI.map((c,i)=>{
