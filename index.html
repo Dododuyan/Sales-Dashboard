@@ -217,7 +217,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 17:10 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-26 17:16 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -1166,7 +1166,7 @@ function renderContrib(){
   tb.innerHTML=body;})();
  const cs=document.getElementById('contribScope');if(cs)cs.textContent='· '+basisL+' · '+scopeL+' · '+krScopeLabel();
  const head=['순위','PIC','보유시설','거래시설','거래율','SELLING(원)','BUYING(원)',ML+' 비중','RN(박)','ADR(원)','MARGIN(원)','MRG%'];
- const HTIP={'거래율':'보유 시설 중 이 기간에 실적이 발생한 비율 (거래시설 ÷ 보유시설)','거래시설':'이 기간에 한 번이라도 실적이 발생한 고유 시설 수','보유시설':'담당 시설 수 (구코드 제외)'};
+ const HTIP={'거래율':'보유 시설 중 이 기간에 실적이 발생한 비율 (거래시설 ÷ 보유시설)','거래시설':'이 기간에 한 번이라도 실적이 발생한 고유 시설 수 — 계약상태 무관(Pending·Suspended 포함). My Hotel 「활성율」은 Active 만 세므로 숫자가 더 작습니다','보유시설':'담당 시설 수 (구코드 제외)'};
  const th=document.querySelector('#contribTbl thead');if(th)th.innerHTML='<tr>'+head.map((h,i)=>`<th class="${i===1?'l':''}"${HTIP[h]?` title="${HTIP[h]}"`:''}>${h}</th>`).join('')+'</tr>';
  const tb=document.querySelector('#contribTbl tbody');
  if(tb)tb.innerHTML=arr.map((a,i)=>{const sh=Tv?mvf(a)/Tv*100:0;const isMe=a.pic==='ME';const nm=PICLAB[a.pic]||a.pic;const adr=a.rn?a.sell/a.rn:0;
@@ -1431,15 +1431,18 @@ function renderMyHotel(base){
  const _actAll=base.filter(o=>(o.status||'')==='Active'&&!o.linkTo);
  const _actLive=_actAll.filter(o=>full26(o)>0).length;
  const _scopeL=state.year+(state.month==='all'?' 전체월':'.'+state.month+'월');
+ // Active 는 아니지만 실적이 발생한 시설 — 기여도 탭 '거래시설' 과의 차이 설명용
+ const _nonAct=base.filter(o=>!o.linkTo&&(o.status||'')!=='Active'&&full26(o)>0).length;
  const tt=realN||1;const pv=v=>Math.round(v/tt*100)+'%';const cards=[
   ['총 담당',realN+'시설',_oldN?('구코드 '+_oldN+'곳 제외'):'100%','all'],
   ['운영 Active',byst('Active')+'시설',pv(byst('Active')),'act'],
-  ['활성율 (예약발생)',_actLive+'시설','Active '+_actAll.length+'곳 중 '+(_actAll.length?Math.round(_actLive/_actAll.length*100):0)+'%','live'],
-  ['Active 무실적',(_actAll.length-_actLive)+'시설',_scopeL+' 실적 없음','idle'],['대기 Pending',byst('Pending')+'시설',pv(byst('Pending')),'pend'],['중단 Suspended',byst('Suspended')+'시설',pv(byst('Suspended')),'susp'],['서울에서 만남 가능',sN+'시설','서울소재 '+sLocal+' + 사무소 '+sOff,'seoul'],['50일+ 미접촉',stN+'시설',Math.round(stN/(all.length||1)*100)+'% / 전체','stale']];
+  ['활성율 (예약발생)',_actLive+'시설','Active '+_actAll.length+'곳 중 '+(_actAll.length?Math.round(_actLive/_actAll.length*100):0)+'%','live',
+   'Active 시설만 셉니다. 기여도 탭의 「거래시설」은 Pending·Suspended 까지 포함해 숫자가 더 큽니다 (현재 +'+_nonAct+'곳)'],
+  ['Active 무실적',(_actAll.length-_actLive)+'시설',_scopeL+' 실적 없음','idle','계약은 살아 있는데 이 기간에 예약이 붙지 않은 시설'],['대기 Pending',byst('Pending')+'시설',pv(byst('Pending')),'pend'],['중단 Suspended',byst('Suspended')+'시설',pv(byst('Suspended')),'susp'],['서울에서 만남 가능',sN+'시설','서울소재 '+sLocal+' + 사무소 '+sOff,'seoul'],['50일+ 미접촉',stN+'시설',Math.round(stN/(all.length||1)*100)+'% / 전체','stale']];
  document.getElementById('myKpi').innerHTML=cards.map(c=>{
    const k=c[3],on=k&&state.myPick===k,click=!!k;
    return `<div class="wkc${click?' prCard':''}${on?' on':''}"${click?` onclick="myPick('${k}')" title="클릭하면 이 조건의 시설만 표에 표시됩니다"`:''}>`
-     +`<div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}${click?`<span class="prHint">${on?'해제':'보기'}</span>`:''}</div></div>`;}).join('');
+     +`<div class="t"${c[4]?` title="${c[4]}" style="cursor:help;border-bottom:1px dotted #ccc;display:inline-block"`:''}>${c[0]}</div><div class="v">${c[1]}</div><div class="u">${c[2]}${click?`<span class="prHint">${on?'해제':'보기'}</span>`:''}</div></div>`;}).join('');
  // 선택된 카드 조건으로 표를 좁힙니다
  const _mp=MYSETS[state.myPick];
  if(_mp&&_mp.f)base=base.filter(o=>_mp.f(o,full26(o)));
