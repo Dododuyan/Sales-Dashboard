@@ -179,6 +179,14 @@ th.meCol{background:var(--od)}
  cursor:pointer;vertical-align:middle;line-height:1}
 .cmpAdd:hover{background:var(--oll)}
 .cmpAdd.on{background:var(--o);color:#fff;border-color:var(--o)}
+.rgLink{cursor:pointer;border-bottom:1px dotted var(--ol)}
+.rgLink:hover{color:var(--od);border-bottom-color:var(--od)}
+.rgBar{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:11px}
+.rgBar .nm{width:34px;color:var(--gray);text-align:right}
+.rgBar .tk{flex:1;height:13px;background:#EDEDEC;border-radius:4px;overflow:hidden;position:relative}
+.rgBar .tk i{display:block;height:100%;background:var(--o)}
+.rgBar .tk b{position:absolute;left:0;top:0;height:100%;border-right:2px dashed #9E9E9E}
+.rgBar .vv{width:118px;text-align:right;color:#555;white-space:nowrap}
 .cmpTray{display:flex;align-items:center;flex-wrap:wrap;gap:7px;background:var(--oll);border:1px solid var(--ol);
  border-radius:9px;padding:8px 11px;margin:8px 0 2px;font-size:11.5px}
 .cmpChip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--ol);
@@ -231,7 +239,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-27 09:49 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-27 09:51 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -584,7 +592,7 @@ function renderTable(rows,MO){
   y23:sumScope(o,2023,MO),y24:sumScope(o,2024,MO),y25:sumScope(o,2025,MO),y26:sumScope(o,2026,MO),g:o._g,dd:o._cur-o._prev,ctmix:dimMix(CT,o.code,MO),cmmix:dimMix(CM,o.code,MO)}));
  vv.sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(typeof x==='string')return sortDir*(''+x).localeCompare(''+y);return sortDir*((x||0)-(y||0));});
  const f=v=>won(v);
- document.querySelector('#tbl tbody').innerHTML=vv.map(r=>`<tr><td class="l">${r.region}</td><td class="l">${cityKo(r.city)}</td><td class="l" style="color:#999">${r.area||''}</td><td class="l"><span class="badge b-${STC2[r.status]||'none'}">${r.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[r.cat]}">${r.cat}</span></td><td class="l" style="color:#aaa">${r.code||''}</td><td class="l hname" style="font-weight:600" onclick="openModal(${r.code})" title="클릭 → 호텔 카드">${r.name}${tp3(r.o)}${cmpBtn(r.code)}</td><td>${f(r.y23)}</td><td>${f(r.y24)}</td><td>${f(r.y25)}</td><td>${f(r.y26)}</td><td class="${r.g>0?'pos':r.g<0?'neg':''}">${r.g==null?'–':(r.g*100).toFixed(0)+'%'}</td><td class="${r.dd>0?'pos':r.dd<0?'neg':''}">${r.dd>0?'+':''}${f(r.dd)}</td><td class="l" style="font-size:10px;color:#777">${r.ctmix||'-'}</td><td class="l" style="font-size:10px;color:#777">${r.cmmix||'-'}</td><td class="l"><span class="pic-tag pic-${r.pic}">${r.pic}</span></td></tr>`).join('');
+ document.querySelector('#tbl tbody').innerHTML=vv.map(r=>`<tr><td class="l">${r.region}</td><td class="l"><span class="rgLink" onclick="openRegion('${r.city||''}')" title="클릭 → 지역 브리핑">${cityKo(r.city)}</span></td><td class="l" style="color:#999">${r.area||''}</td><td class="l"><span class="badge b-${STC2[r.status]||'none'}">${r.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[r.cat]}">${r.cat}</span></td><td class="l" style="color:#aaa">${r.code||''}</td><td class="l hname" style="font-weight:600" onclick="openModal(${r.code})" title="클릭 → 호텔 카드">${r.name}${tp3(r.o)}${cmpBtn(r.code)}</td><td>${f(r.y23)}</td><td>${f(r.y24)}</td><td>${f(r.y25)}</td><td>${f(r.y26)}</td><td class="${r.g>0?'pos':r.g<0?'neg':''}">${r.g==null?'–':(r.g*100).toFixed(0)+'%'}</td><td class="${r.dd>0?'pos':r.dd<0?'neg':''}">${r.dd>0?'+':''}${f(r.dd)}</td><td class="l" style="font-size:10px;color:#777">${r.ctmix||'-'}</td><td class="l" style="font-size:10px;color:#777">${r.cmmix||'-'}</td><td class="l"><span class="pic-tag pic-${r.pic}">${r.pic}</span></td></tr>`).join('');
  const ASCFIRST=new Set(['name','region','city','area','status','pic','cat','code']);document.querySelectorAll('#tbl thead th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=ASCFIRST.has(k)?1:-1;}renderTable(rows,MO);});updSortBtn();
 }
 let pkChart=null;
@@ -751,6 +759,71 @@ function openCompare(){
      +V.map((x,i)=>`<td class="l${i===bi?' best':''}">${r.fn(x)}</td>`).join('')+'</tr>';});
  body+='</tbody></table></div>';
  document.getElementById('mBody').innerHTML=body;
+}
+// ── 지역 브리핑 (260827) ──────────────────────────────────────────
+//   미팅 중 "서귀포는 어때요?" 질문에 시장 흐름 → 내 위치 → 시설 목록 순으로 즉답
+function openRegion(city){
+ if(!city)return; mCode=null;
+ document.getElementById('modalBg').classList.add('on');
+ const Y=state.year, PY=Y-1, mi=state.m==='r'?0:state.m==='m'?2:1;
+ const ML={r:'RN',s:'매출',m:'마진'}[state.m];
+ const basisL={cout:'체크아웃',cin:'체크인',book:'부킹'}[state.b];
+ const uf=v=>state.m==='r'?won(v)+'박':bm(v)+'원';
+ // 지역 전체 (모든 PIC)
+ const RM=(y)=>{const a={};
+   Object.keys(KR).forEach(k=>{const q=k.split(KRSEP);if(q.length!==3||q[2]!==city)return;
+     const d=(KR[k]||{})[state.b]||{};
+     for(const ym in d){if(+ym.slice(0,4)!==y)continue;const m=+ym.slice(4);
+       const e=a[m]||(a[m]=[0,0,0]);e[0]+=d[ym][0];e[1]+=d[ym][1];e[2]+=d[ym][2];}});
+   return a;};
+ const cy=RM(Y), py=RM(PY);
+ const sumA=a=>{const t=[0,0,0];for(const m in a)for(let i=0;i<3;i++)t[i]+=a[m][i];return t;};
+ const T=sumA(cy), P=sumA(py);
+ // 내 시설
+ const mine=DATA.filter(o=>!o.linkTo&&o.city===city);
+ const mv=o=>{const d=((o.mon)||{})[state.b]||{};let a=0,b=0,c=0;
+   for(const ym in d){if(+ym.slice(0,4)===Y){a+=d[ym][0];b+=d[ym][1];c+=d[ym][2];}}return[a,b,c];};
+ const MI=mine.map(o=>({o,v:mv(o)})).filter(x=>x.v[1]>0).sort((a,b)=>b.v[mi]-a.v[mi]);
+ const MT=MI.reduce((t,x)=>[t[0]+x.v[0],t[1]+x.v[1],t[2]+x.v[2]],[0,0,0]);
+ const adrR=T[0]?T[1]/T[0]:0, mrR=T[1]?T[2]/T[1]*100:0;
+ const adrP=P[0]?P[1]/P[0]:0;
+ const g=(a,b)=>b>0?`<b class="${a>=b?'pos':'neg'}">${a>=b?'+':''}${((a-b)/b*100).toFixed(0)}%</b>`:'<span style="color:#bbb">–</span>';
+ document.getElementById('mTitle').innerHTML=`${cityKo(city)} <span style="font-weight:400;font-size:14px;opacity:.85">지역 브리핑</span>`;
+ document.getElementById('mMeta').innerHTML=`${Y} \u00B7 ${basisL} 기준 \u00B7 지역 전체는 로데이터 전 시설(모든 담당자) \u00B7 지표 ${ML}`;
+ const kpi=`<div class="wkkpi" style="margin-bottom:12px">
+  <div class="wkc"><div class="t">시장 규모 (RN)</div><div class="v">${won(T[0])}박</div><div class="u">전년 ${won(P[0])}박 ${g(T[0],P[0])}</div></div>
+  <div class="wkc"><div class="t">시장 규모 (매출)</div><div class="v">${bm(T[1])}원</div><div class="u">전년 ${bm(P[1])}원 ${g(T[1],P[1])}</div></div>
+  <div class="wkc"><div class="t">지역 평균 ADR</div><div class="v">\u20A9${won(adrR)}</div><div class="u">전년 \u20A9${won(adrP)} ${g(adrR,adrP)}</div></div>
+  <div class="wkc"><div class="t">지역 마진율</div><div class="v">${mrR.toFixed(1)}%</div><div class="u">내 점유 ${T[1]?(MT[1]/T[1]*100).toFixed(1):0}% \u00B7 ${MI.length}곳</div></div></div>`;
+ // 월별 흐름
+ let mx=0; for(let m=1;m<=12;m++){mx=Math.max(mx,(cy[m]||[0,0,0])[mi],(py[m]||[0,0,0])[mi]);}
+ mx=mx||1;
+ let bars='';
+ for(let m=1;m<=12;m++){const c=(cy[m]||[0,0,0])[mi], p2=(py[m]||[0,0,0])[mi];
+   if(!c&&!p2)continue;
+   bars+=`<div class="rgBar"><span class="nm">${m}월</span>
+     <span class="tk"><i style="width:${c/mx*100}%"></i>${p2?`<b style="width:${p2/mx*100}%"></b>`:''}</span>
+     <span class="vv">${uf(c)} ${p2?g(c,p2):''}</span></div>`;}
+ const flow=`<div class="mbox"><h4>월별 흐름 <span style="font-weight:400;color:var(--gray);font-size:10px">(막대=${Y} ${ML} \u00B7 점선=${PY} 같은 달)</span></h4>${bars||'<div style="color:#bbb;font-size:11px">데이터 없음</div>'}</div>`;
+ // 내 시설 목록
+ const rows=MI.map((x,i)=>{const o=x.o, adr=x.v[0]?x.v[1]/x.v[0]:0, mr=x.v[1]?x.v[2]/x.v[1]*100:0;
+   const gap=adrR?(adr/adrR*100-100):null;
+   return `<tr><td>${i+1}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}${tp3(o)}${cmpBtn(o.code)}</td>
+    <td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td>
+    <td>${won(x.v[0])}</td><td>${bm(x.v[1])}</td><td>\u20A9${won(adr)}</td>
+    <td class="l">${gap==null?'-':`<b style="color:${gap>=0?'#3F8A5C':'#9E4A44'}">${gap>=0?'\u25B2':'\u25BC'}${Math.abs(gap).toFixed(0)}%</b>`}</td>
+    <td>${mr.toFixed(1)}%</td>${watchContactTd(o)}</tr>`;}).join('');
+ const list=`<div class="mbox"><h4>내 담당 시설 <span style="font-weight:400;color:var(--gray);font-size:10px">(${MI.length}곳 \u00B7 ${ML} 순 \u00B7 이름 클릭 = 호텔 카드 \u00B7 + = 비교 담기)</span></h4>
+  <div class="tbl-wrap" style="max-height:340px"><table class="sortable"><thead><tr><th>#</th><th class="l">호텔</th><th class="l">분류</th><th>RN</th><th>매출</th><th>ADR</th><th class="l">지역평균 대비</th><th>마진율</th><th class="l">최종 접촉</th></tr></thead><tbody>${rows||'<tr><td colspan="9" style="color:#bbb">실적 발생 시설 없음</td></tr>'}</tbody></table></div></div>`;
+ // 한 줄 요약
+ const grow=MI.filter(x=>x.o._cat==='성장').length, drop=MI.filter(x=>x.o._cat==='급락').length;
+ const top=MI[0];
+ const sum=`<div class="hins"><h4><svg class="ic"><use href="#i-target"/></svg> 한 줄 요약</h4><ul>
+  <li>${cityKo(city)} 시장은 ${Y}년 <b>${bm(T[1])}원</b> \u00B7 전년 대비 ${g(T[1],P[1])} \u00B7 평균 ADR <b>\u20A9${won(adrR)}</b> (${g(adrR,adrP)})</li>
+  <li>내 담당 <b>${MI.length}곳</b>이 지역 매출의 <b>${T[1]?(MT[1]/T[1]*100).toFixed(1):0}%</b>를 차지 \u00B7 성장 ${grow}곳 \u00B7 급락 ${drop}곳</li>
+  ${top?`<li>최대 시설 <b>${top.o.name}</b> ${bm(top.v[1])}원 (지역의 ${T[1]?(top.v[1]/T[1]*100).toFixed(1):0}%)</li>`:''}
+  </ul></div>`;
+ document.getElementById('mBody').innerHTML=kpi+sum+flow+list;
 }
 function openModal(code){mCode=code;mState={m:'r',b:'cout',year:state.year,month:state.month};document.getElementById('modalBg').classList.add('on');renderModal();}
 function renderModal(){
@@ -1420,7 +1493,7 @@ function renderRegion(inScope,TALL,pfx,mvf,fmtV,ML){
  if(tb)tb.innerHTML=R.map((e,i)=>{
    const sh=TALLv?mv(e)/TALLv*100:0, inR=mv(e)?mvMe(e)/mv(e)*100:0, all=TALLv?mvMe(e)/TALLv*100:0;
    const adr=e.rn?e.sell/e.rn:0, mine=mvMe(e)>0;
-   return `<tr><td><b>${i+1}</b></td><td class="l" style="font-weight:${mine?'700':'400'};color:${mine?'var(--od)':'inherit'}">${lab(e)}</td>`
+   return `<tr><td><b>${i+1}</b></td><td class="l" style="font-weight:${mine?'700':'400'};color:${mine?'var(--od)':'inherit'}"><span class="rgLink" onclick="openRegion('${e.key}')" title="클릭 → 지역 브리핑">${lab(e)}</span></td>`
     +`<td><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;min-width:34px;height:8px;background:#E6E5E3;border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:${Math.min(sh,100)}%;background:#D6D6D3"></i></div><b>${sh.toFixed(1)}%</b></div></td>`
     +`<td>${bm(e.sell)}</td><td>${won(e.rn)}</td><td>${won(adr)}</td><td>${e.sell?(e.mg/e.sell*100).toFixed(1):'0'}%</td>`
     +`<td style="font-weight:${mine?'700':'400'};color:${mine?'var(--od)':'#bbb'}">${mine?fmtV(mvMe(e)):'–'}</td>`
@@ -1614,7 +1687,7 @@ function renderMyHotel(base){
  document.querySelector('#myTbl thead').innerHTML='<tr>'+head.map((h,i)=>`<th class="${L.has(i)?'l':''}">${h}</th>`).join('')+'</tr>';
  const STC={'Active':'grow','Pending':'new','Suspended':'churn','ing':'keep'};
  const rows=base.slice().sort((a,b)=>full26(b)-full26(a));myExportRows=rows;
- document.querySelector('#myTbl tbody').innerHTML=rows.map((o,i)=>`<tr><td>${i+1}</td><td class="l" style="white-space:nowrap">${cityKo(o.city)||o.region||'-'}${o.area?` <span style="color:#aaa">${o.area}</span>`:''}</td>${_SO?`<td class="l">${(()=>{const k=seoulKind(o);if(!k.on)return '<span style="color:#ddd">-</span>';return '<span class="badge b-'+(k.type==='현지'?'grow':'new')+'" title="'+(k.type==='현지'?'호텔이 서울 소재':'서울 영업·예약 사무소')+' — '+k.lab+'">'+k.lab+'</span>';})()}</td>`:''}<td class="l"><span class="badge b-${STC[o.status]||'none'}">${o.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}${tp3(o)}${cmpBtn(o.code)}</td><td class="l">${o.chain}</td><td>${state.m==='r'?Math.round(full26(o)).toLocaleString():bm(full26(o))}</td>${watchContactTd(o)}<td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`).join('');
+ document.querySelector('#myTbl tbody').innerHTML=rows.map((o,i)=>`<tr><td>${i+1}</td><td class="l" style="white-space:nowrap"><span class="rgLink" onclick="event.stopPropagation();openRegion('${o.city||''}')" title="클릭 → 지역 브리핑">${cityKo(o.city)||o.region||'-'}</span>${o.area?` <span style="color:#aaa">${o.area}</span>`:''}</td>${_SO?`<td class="l">${(()=>{const k=seoulKind(o);if(!k.on)return '<span style="color:#ddd">-</span>';return '<span class="badge b-'+(k.type==='현지'?'grow':'new')+'" title="'+(k.type==='현지'?'호텔이 서울 소재':'서울 영업·예약 사무소')+' — '+k.lab+'">'+k.lab+'</span>';})()}</td>`:''}<td class="l"><span class="badge b-${STC[o.status]||'none'}">${o.status||'-'}</span></td><td class="l"><span class="badge b-${CAT[o._cat]}">${o._cat}</span></td><td class="l" style="color:#aaa">${dcode(o)}</td><td class="l hname" style="font-weight:600" onclick="openModal(${o.code})" title="클릭 → 호텔 카드">${o.name}${tp3(o)}${cmpBtn(o.code)}</td><td class="l">${o.chain}</td><td>${state.m==='r'?Math.round(full26(o)).toLocaleString():bm(full26(o))}</td>${watchContactTd(o)}<td class="l"><span class="pic-tag pic-${o.pic}">${o.pic}</span></td></tr>`).join('');
 }
 function showNoRev(){const isNoRev=state.cats.size===2&&state.cats.has('무거래')&&state.cats.has('이탈');if(isNoRev){state.cats=new Set(CATLABEL);}else{state.cats=new Set(['무거래','이탈']);if(!state.status.has('Active')){state.status=new Set(['Active']);document.querySelectorAll('.stchk').forEach(c=>c.checked=(c.value==='Active'));syncStAll();}}state.view='main';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v==='main'));['main','myhotel','weekly','pickup','promo','contrib'].forEach(v=>document.getElementById('view'+v[0].toUpperCase()+v.slice(1)).style.display=state.view===v?'':'none');render();}
 function promoStatus(o){const t=new Date();t.setHours(0,0,0,0);
