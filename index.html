@@ -59,9 +59,10 @@ tbody td.l{text-align:left} tbody tr{cursor:default} tbody tr:hover{background:v
 .modal-bg{position:fixed;inset:0;background:rgba(45,25,15,.55);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:24px;overflow:auto}
 .modal-bg.on{display:flex}
 .modal{background:#fff;border-radius:16px;max-width:940px;width:100%;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
-.mhead{background:linear-gradient(100deg,var(--o),var(--od));color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start}
-.mhead h2{font-size:19px} .mhead .meta{font-size:11.5px;opacity:.93;margin-top:4px}
-.mclose{background:rgba(255,255,255,.2);border:0;color:#fff;font-size:20px;width:32px;height:32px;border-radius:8px;cursor:pointer}
+.mhead{background:#FDF5EF;color:var(--dk);border-bottom:1px solid var(--ol);border-left:5px solid var(--o);padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start}
+.mhead h2{font-size:19px} .mhead .meta{font-size:11.5px;color:var(--gray);margin-top:4px}
+.mclose{background:#fff;border:1px solid var(--ol);color:var(--od);font-size:20px;width:32px;height:32px;border-radius:8px;cursor:pointer}
+.mclose:hover{background:var(--oll)}
 .mbody{padding:18px 20px}
 .mkpi{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px}
 .mkstrip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px}.mkstrip .wkc{min-width:0}@media(max-width:760px){.mkstrip{grid-template-columns:repeat(3,1fr)}}
@@ -183,12 +184,14 @@ th.meCol{background:var(--od)}
 .rgLink:hover{color:var(--od);border-bottom-color:var(--od)}
 .rgBar{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:11px}
 .rgBar .nm{width:34px;color:var(--gray);text-align:right}
-.rgBar .tk{flex:1;height:13px;background:#EDEDEC;border-radius:4px;overflow:hidden;position:relative}
-.rgBar .tk i{display:block;height:100%;background:var(--o)}
-.rgBar .tk b{position:absolute;left:0;top:0;height:100%;border-right:2px dashed #9E9E9E}
+.rgBar .tk{flex:1;height:13px;background:#F2F2F1;border-radius:4px;position:relative}
+.rgBar .tk i{display:block;height:100%;background:#F0C3A3;border-radius:4px}
+.rgBar .tk b{position:absolute;left:0;top:-2px;height:calc(100% + 4px);border-right:2px solid #8A5238;z-index:2}
+.rgBar .tk b:after{content:'';position:absolute;right:-4px;top:-3px;border-left:3px solid transparent;
+ border-right:3px solid transparent;border-top:4px solid #8A5238}
 .rgBar .vv{width:118px;text-align:right;color:#555;white-space:nowrap}
 .cmpTray{display:flex;align-items:center;flex-wrap:wrap;gap:7px;background:var(--oll);border:1px solid var(--ol);
- border-radius:9px;padding:8px 11px;margin:8px 0 2px;font-size:11.5px}
+ border-radius:9px;padding:8px 11px;margin:2px 0 10px;font-size:11.5px}
 .cmpChip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--ol);
  border-radius:999px;padding:3px 9px;font-weight:600}
 .cmpChip i{cursor:pointer;color:var(--gray);font-style:normal;font-weight:800}
@@ -239,7 +242,7 @@ th.meCol{background:var(--od)}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-27 09:51 KST</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-08-21 · 프로모션 2026-08-24</span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래)<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결) · 빌드 2026-08-27 10:13 KST</div></details></div>
 <div class="tabs"><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab on" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
 <div class="seg" id="mSeg"><button data-m="r" class="on">RN</button><button data-m="s">매출</button><button data-m="m">마진</button></div>
@@ -254,7 +257,6 @@ th.meCol{background:var(--od)}
 <span class="fg"><label>CMS</label><select id="fCms" title="CMS는 시설 필터로만 동작합니다 (복수 운영 1곳뿐이라 실적 분리 불필요)"><option value="">전체</option></select></span><span id="dimModeBox" style="display:none;margin-left:4px"><button class="miniBtn dimm on" data-m="slice" title="선택한 유형의 예약 실적만 집계합니다">해당 유형 실적만</button><button class="miniBtn dimm" data-m="fac" title="해당 유형을 운영하는 시설의 전체 실적을 봅니다">시설 전체</button></span>
 <input type="search" id="fSearch" placeholder="호텔명·코드 검색"><span id="perfCardBtn" style="display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center;margin-left:6px"></span>
 </div>
-<div id="cmpTray"></div>
 <div id="dimNote" style="display:none;font-size:11px;color:#6E5F63;background:var(--oll);border:1px solid var(--ol);border-radius:6px;padding:5px 10px;margin-bottom:8px"></div>
 <div class="statusbar" id="statusbar"><b>계약상태</b></div>
 <div id="viewMain" style="display:none"><div class="kpis" id="kpis"></div>
@@ -313,7 +315,7 @@ th.meCol{background:var(--od)}
 <div class="wkkpi" id="myKpi"></div>
 <div id="myPickScope" style="margin:6px 0 2px"></div>
 <div class="card"><h3><svg class="ic"><use href="#i-hotel"/></svg> My Hotel — 담당 시설 관리대장<button class="miniBtn" id="btnStale" onclick="toggleStale()" style="margin-left:8px;vertical-align:middle" title="마지막 미팅·통화가 50일을 넘었거나 기록이 없는 시설만 봅니다"><svg class="ic"><use href="#i-clock"/></svg> 50일+ 미접촉</button><button class="miniBtn" id="btnSeoul" onclick="toggleSeoul()" style="margin-left:8px;vertical-align:middle" title="호텔 소재지는 지방인데 서울에 영업·예약 사무소가 있는 시설만 봅니다"><svg class="ic"><use href="#i-building"/></svg> 서울오피스</button><button class="miniBtn" onclick="exportMyHotel()" style="margin-left:8px;vertical-align:middle" title="이 표를 CSV(엑셀)로 내려받습니다"><svg class="ic"><use href="#i-download"/></svg> 관리대장 CSV</button> <span style="font-weight:400;color:var(--gray);font-size:11px">— 행 클릭 시 히스토리 카드 · 필터 연동 · 기준파일 김도도(NEW)</span></h3>
-<div class="tbl-wrap" style="max-height:640px"><table id="myTbl" class="sortable"><thead></thead><tbody></tbody></table></div></div>
+<div id="cmpTray"></div><div class="tbl-wrap" style="max-height:640px"><table id="myTbl" class="sortable"><thead></thead><tbody></tbody></table></div></div>
 </div>
 <div id="viewPromo" style="display:none">
 <div class="wkkpi" id="prKpi"></div>
@@ -675,12 +677,16 @@ function toggleCmp(code){code=String(code);const i=state.cmp.indexOf(code);
 function cmpClear(){state.cmp=[];render();}
 function renderCmpTray(){
  const el=document.getElementById('cmpTray'); if(!el)return;
- if(!state.cmp.length){el.innerHTML='';return;}
+ if(!state.cmp.length){
+   el.innerHTML=`<div class="cmpTray" style="background:#FBFBFA;border-style:dashed">
+     <b style="color:var(--od)"><svg class="ic"><use href="#i-target"/></svg> 호텔 비교</b>
+     <span style="color:var(--gray)">호텔명 옆 <span class="cmpAdd" style="cursor:default">+</span> 를 눌러 최대 ${CMPMAX}곳까지 담으면, 실적\u00B7ADR\u00B7마진율\u00B7부킹페이스를 나란히 비교합니다</span></div>`;
+   return;}
  const chips=state.cmp.map(c=>{const o=DATA.find(x=>String(x.code)===c);
    return `<span class="cmpChip">${o?o.name:c}<i onclick="toggleCmp('${c}')" title="빼기">\u00D7</i></span>`;}).join('');
- el.innerHTML=`<b style="color:var(--od)">비교 담기 ${state.cmp.length}/${CMPMAX}</b>${chips}
+ el.innerHTML=`<div class="cmpTray"><b style="color:var(--od)"><svg class="ic"><use href="#i-target"/></svg> 비교 담기 ${state.cmp.length}/${CMPMAX}</b>${chips}
    <button class="miniBtn" onclick="openCompare()" ${state.cmp.length<2?'disabled title="2곳 이상 담아주세요"':''}><svg class="ic"><use href="#i-target"/></svg> 비교표 열기</button>
-   <button class="miniBtn" onclick="cmpClear()">전체 해제</button>`;
+   <button class="miniBtn" onclick="cmpClear()">전체 해제</button></div>`;
 }
 function openCompare(){
  if(state.cmp.length<2)return;
@@ -748,7 +754,8 @@ function openCompare(){
    ['당월('+cm+'월) 온북']:x.pkCur,'향후 온북(~12월)':x.pkNow,'이번 주 픽업':x.pkWow,
    '전년 동기 대비':x.pkStly,'2027 온북':x.pk27}[key]);
  let body='<div class="tbl-wrap" style="max-height:none"><table id="cmpTbl"><thead><tr><th class="l">지표</th>'
-   +V.map(x=>`<th class="l">${x.o.name}${tp3(x.o)}<div style="font-weight:400;color:var(--gray);font-size:10px">${dcode(x.o)}</div></th>`).join('')+'</tr></thead><tbody>';
+   +V.map(x=>`<th class="l"><span class="hname" style="font-weight:700" onclick="openModal(${x.o.code})" title="클릭 → 호텔 카드">${x.o.name}</span>${tp3(x.o)}
+     <div style="font-weight:400;color:var(--gray);font-size:10px">${dcode(x.o)}</div></th>`).join('')+'</tr></thead><tbody>';
  rows.forEach(r=>{
    if(r.grp){body+=`<tr class="grp"><td colspan="${V.length+1}">${r.grp}</td></tr>`;return;}
    let bi=-1;
@@ -804,7 +811,7 @@ function openRegion(city){
    bars+=`<div class="rgBar"><span class="nm">${m}월</span>
      <span class="tk"><i style="width:${c/mx*100}%"></i>${p2?`<b style="width:${p2/mx*100}%"></b>`:''}</span>
      <span class="vv">${uf(c)} ${p2?g(c,p2):''}</span></div>`;}
- const flow=`<div class="mbox"><h4>월별 흐름 <span style="font-weight:400;color:var(--gray);font-size:10px">(막대=${Y} ${ML} \u00B7 점선=${PY} 같은 달)</span></h4>${bars||'<div style="color:#bbb;font-size:11px">데이터 없음</div>'}</div>`;
+ const flow=`<div class="mbox"><h4>월별 흐름 <span style="font-weight:400;color:var(--gray);font-size:10px">(연한 막대=${Y} ${ML} \u00B7 진한 세로선=${PY} 같은 달)</span></h4>${bars||'<div style="color:#bbb;font-size:11px">데이터 없음</div>'}</div>`;
  // 내 시설 목록
  const rows=MI.map((x,i)=>{const o=x.o, adr=x.v[0]?x.v[1]/x.v[0]:0, mr=x.v[1]?x.v[2]/x.v[1]*100:0;
    const gap=adrR?(adr/adrR*100-100):null;
@@ -887,7 +894,11 @@ function renderModal(){
   const _ck=_yA+'-'+String(_cm).padStart(2,'0');
   const _cN=(_pk[_ck]&&_pk[_ck].now)?_pk[_ck].now[_mi]:0;
   pkLine=nw||w1||st?`<div class="pace" style="margin:0 0 12px 0"><b><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스(픽업)</b> · 이번 달(${_cm}월) 온북 <b>${_f(_cN)}${_u}</b> · 향후(~12월) <b>${_f(nw)}${_u}</b> · 이번 주 <b class="${wv>=0?'pos':'neg'}">${wv>=0?'+':''}${_f(wv)}</b> · 전년 동기 리드 대비 ${sp==null?'–':'<b class="'+(sp>=0?'pos':'neg')+'">'+(sp>=0?'+':'')+sp.toFixed(0)+'%</b>'} <span style="color:var(--gray);font-size:10px">(스냅 2026-08-21)</span></div>`:'';}
- const body=`${_lnkBox}${ctrl}${kpi}${kpiNote}${benchBox}${dimBox}${insBox}${promoBox}${paceBox}${pkLine}
+ const _backCmp=(state.cmp&&state.cmp.length>=2)
+   ?`<div style="margin:0 0 10px"><button class="miniBtn" onclick="openCompare()"><svg class="ic"><use href="#i-target"/></svg> \u2190 비교표로 돌아가기 (${state.cmp.length}곳)</button>
+      <span style="margin-left:6px">${cmpBtn(o.code)}</span>
+      <span style="color:var(--gray);font-size:10.5px;margin-left:4px">${state.cmp.indexOf(String(o.code))>=0?'이 호텔은 비교에 담겨 있습니다':'+ 를 눌러 이 호텔도 비교에 담기'}</span></div>`:'';
+ const body=`${_backCmp}${_lnkBox}${ctrl}${kpi}${kpiNote}${benchBox}${dimBox}${insBox}${promoBox}${paceBox}${pkLine}
   <div class="mgrid">
    <div class="mbox"><h4>연도별 추이 (${({r:'RN',s:'매출',m:'마진'})[mState.m]}, ${basisL}${mState.month==='all'?'':' · '+mState.month+'월'})</h4><canvas id="mcTrend" height="120"></canvas></div>
    <div class="mbox"><h4>월별 패턴 ${mState.year} vs ${mState.year-1}</h4><canvas id="mcMon" height="120"></canvas></div>
