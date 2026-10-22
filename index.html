@@ -449,7 +449,7 @@ table.mrT tr:last-child td{border-bottom:0}
 <div class="wrap">
 <header><div class="brand">OHMYHOTEL & CO · REGIONAL SCM</div><h1>Dodo's Dashboard</h1>
 <div class="sub">한국 채널 · 제주 SCM · 담당 <span id="facN">309</span>개 시설 · 예약 로데이터 기반 · 부킹/체크인/체크아웃 3기준 · 호텔 클릭 시 상세(채널·국적·부킹페이스)</div></header>
-<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-10-19 · 프로모션 2026-10-19 · <span class="btsv" title="이 화면을 만든 시각입니다. 배포 후에도 이 값이 그대로면 브라우저 새로고침(Ctrl+F5) 하세요">빌드 2026-10-22 16:58 KST</span></span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) — <b>아직 투숙이 안 끝난 달은 빼고</b> 판정합니다(온북을 전년 실적과 비교하면 전부 급락으로 잡힘). 합계·차트는 선택 기간 전체<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결)</div></details></div>
+<div class="note"><span style="float:right;color:var(--gray);font-weight:400"><svg class="ic"><use href="#i-calendar"/></svg> 실적 2026-10-19 · 프로모션 2026-10-19 · <span class="btsv" title="이 화면을 만든 시각입니다. 배포 후에도 이 값이 그대로면 브라우저 새로고침(Ctrl+F5) 하세요">빌드 2026-10-22 17:03 KST</span></span><details><summary><svg class="ic"><use href="#i-pin"/></svg> <b>집계 기준 안내</b></summary><div style="margin-top:7px;line-height:1.7"><b>기준</b>: 부킹일=예약접수 시점 · 체크인=투숙 시작 · 체크아웃=투숙 완료(매출인식) · 실적(매출·RN·마진)은 취소 제외(취소율은 별도 집계)<br><b>카테고리</b>=선택 연도 vs 전년 동월범위(성장≥+10% · 급락≤−30% · 이탈 · 신규 · 유지 · 무거래) — <b>아직 투숙이 안 끝난 달은 빼고</b> 판정합니다(온북을 전년 실적과 비교하면 전부 급락으로 잡힘). 합계·차트는 선택 기간 전체<br><b>갱신</b>=2026·2027분 매주 갱신(2023~25 확정 동결)</div></details></div>
 <div class="scopebar" id="scopeBar"></div>
 <div class="tabs"><button class="tab on" data-v="priority"><svg class="ic"><use href="#i-target"/></svg> 우선순위</button><button class="tab" data-v="myhotel"><svg class="ic"><use href="#i-hotel"/></svg> My Hotel</button><button class="tab" data-v="promo"><svg class="ic"><use href="#i-ticket"/></svg> 프로모션</button><button class="tab" data-v="pickup"><svg class="ic"><use href="#i-rocket"/></svg> 부킹 페이스</button><button class="tab" data-v="weekly"><svg class="ic"><use href="#i-trend-up"/></svg> 리포트</button><button class="tab" data-v="main"><svg class="ic"><use href="#i-chart"/></svg> 포트폴리오</button><button class="tab" data-v="contrib"><svg class="ic"><use href="#i-pie"/></svg> 기여도</button></div>
 <div class="bar">
@@ -1069,6 +1069,11 @@ function buildChainReport(chain){
  const St=list.map(d=>chainStat(d,Y,basis,upto)).sort((a,b)=>b.rn-a.rn);
  const Sp=list.map(d=>chainStat(d,Y-1,basis,upto));
  const pm={}; Sp.forEach(x=>pm[x.o.code]=x);
+ /* 지점명 축약 — 표·막대·프로모션 세 곳이 같은 이름을 씁니다 (261022).
+    종전엔 앞 24자만 잘라 'NINE TREE BY PARNAS SEOU' 5줄이 전부 똑같이 보였습니다. */
+ const SHORT=(function(){const m={},L=chainShort(St.map(x=>x.o.name));
+   St.forEach((x,i)=>m[x.o.code]=L[i]);return m;})();
+ const brN=o=>_xe(SHORT[o.code]||o.name||'');
  const T={rn:0,buy:0,bk:0}; St.forEach(x=>{T.rn+=x.rn;T.buy+=x.buy;T.bk+=x.bk;});
  const Tp=Sp.reduce((a,x)=>({rn:a.rn+x.rn,buy:a.buy+x.buy}),{rn:0,buy:0});
  const W=v=>'₩'+Math.round(v||0).toLocaleString();
@@ -1106,7 +1111,7 @@ function buildChainReport(chain){
   +`<div><div class="k">Avg. LOS</div><div class="v">${wLOS?wLOS.toFixed(2):'–'}박</div><div class="d">RN 가중평균</div></div>`
   +`</div>`;
  const rows=St.map(x=>{const pv=pm[x.o.code]||{rn:0,buy:0};
-   return `<tr><td><span class="mrLink" onclick="closeMeetReport();openModal('${x.o.code}')" title="호텔 카드 열기">${_xe(x.o.name).slice(0,24)}</span></td><td>${won(x.rn)}</td><td>${T.rn?(x.rn/T.rn*100).toFixed(1):'0.0'}%</td>`
+   return `<tr><td><span class="mrLink" onclick="closeMeetReport();openModal('${x.o.code}')" title="${_xe(x.o.name)} \u2014 호텔 카드 열기">${brN(x.o)}</span></td><td>${won(x.rn)}</td><td>${T.rn?(x.rn/T.rn*100).toFixed(1):'0.0'}%</td>`
     +`<td>${mAbb(x.buy)}</td><td>${W(x.rn?x.buy/x.rn:0)}</td><td>${x.los?x.los.toFixed(2):'–'}</td>`
     +`<td>${x.lt?x.lt.toFixed(1):'–'}</td><td>${x.cr!=null?x.cr.toFixed(1)+'%':'–'}</td>`
     +`<td>${sg(dp(x.rn,pv.rn))}</td></tr>`;}).join('');
@@ -1121,15 +1126,14 @@ function buildChainReport(chain){
    ${foot(1)}</div>`;
  // 지점별 월별 RN — 베트남 덱 Room nights by month 와 같은 배치
  const mxA=Math.max.apply(null,St.map(x=>Math.max.apply(null,x.mons.map(m=>m[0]))).concat([1]));
- const SHORT=chainShort(St.map(x=>x.o.name));
  const mAx=`<div class="mrCmAx"><span></span><span class="ax">`
    +Array.from({length:12},(_,i)=>`<span>${i+1}</span>`).join('')+`</span><span></span></div>`;
- const mrows=mAx+St.map((x,xi)=>`<div class="mrCm${x.rn?'':' zero'}" onclick="closeMeetReport();openModal('${x.o.code}')" title="${_xe(x.o.name)} — 호텔 카드 열기">`
-   +`<span class="nm"><span class="mrLink">${_xe(SHORT[xi])}</span></span>`
+ const mrows=mAx+St.map(x=>`<div class="mrCm${x.rn?'':' zero'}" onclick="closeMeetReport();openModal('${x.o.code}')" title="${_xe(x.o.name)} — 호텔 카드 열기">`
+   +`<span class="nm"><span class="mrLink">${brN(x.o)}</span></span>`
    +`<span class="bars">`+x.mons.map((m,i)=>`<span><i class="${i<=upto?'now':''}" style="height:${m[0]?Math.max(Math.round(m[0]/mxA*25),2):0}px" title="${i+1}월 ${won(m[0])}박"></i></span>`).join('')+`</span>`
    +`<span class="rn">${won(x.rn)}박</span></div>`).join('');
  const promoRows=St.map(x=>{const pz=(x.o.promos||[]).length;
-   return `<tr><td><span class="mrLink" onclick="closeMeetReport();openModal('${x.o.code}')" title="호텔 카드 열기">${_xe(x.o.name).slice(0,24)}</span></td><td>${x.o.ctype||'확인 필요'}</td><td>${pz?pz+'건':'<span style="color:#C00000">없음</span>'}</td><td>${_xe(x.o.pcend||'–')}</td></tr>`;}).join('');
+   return `<tr><td><span class="mrLink" onclick="closeMeetReport();openModal('${x.o.code}')" title="${_xe(x.o.name)} \u2014 호텔 카드 열기">${brN(x.o)}</span></td><td>${x.o.ctype||'확인 필요'}</td><td>${pz?pz+'건':'<span style="color:#C00000">없음</span>'}</td><td>${_xe(x.o.pcend||'–')}</td></tr>`;}).join('');
  const noPromo=St.filter(x=>!(x.o.promos||[]).length).length;
  const p2=`<div class="mrPage">${hd}
    <div class="mrSec">지점별 월별 Room nights <em>${Y}년 1~12월 · 체크아웃 기준</em></div>
